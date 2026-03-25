@@ -1,6 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import look4 from "@/assets/look-4.jpg";
+import aboutFounder from "@/assets/about_founder.jpg";
 
 const About = () => {
   return (
@@ -27,7 +27,7 @@ const About = () => {
           {/* Portrait */}
           <div className="relative aspect-[3/4] overflow-hidden rounded-sm">
             <img
-              src={look4}
+              src={aboutFounder}
               alt="Abbas Kaijuka — Founder of Kai's Divo Collection"
               className="w-full h-full object-cover"
               loading="eager"
