@@ -1,21 +1,19 @@
 import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import look1 from "@/assets/look-1.jpg";
-import look2 from "@/assets/look-2.jpg";
-import look3 from "@/assets/look-3.jpg";
-import look4 from "@/assets/look-4.jpg";
-import look5 from "@/assets/look-5.jpg";
-import look6 from "@/assets/look-6.jpg";
 
-const looks = [
-  { src: look1, title: "Evening Formal", span: "md:col-span-1 md:row-span-2" },
-  { src: look2, title: "Editorial Look", span: "md:col-span-1" },
-  { src: look3, title: "Bespoke Tailoring", span: "md:col-span-1" },
-  { src: look5, title: "The Corbata", span: "md:col-span-2" },
-  { src: look4, title: "Signature Red", span: "md:col-span-1" },
-  { src: look6, title: "Contemporary Edge", span: "md:col-span-1" },
-];
+// Dynamically import all images/videos from the assets directory
+const assetModules = import.meta.glob("@/assets/*.{jpg,jpeg,png,mp4}", { eager: true });
+const assets = Object.entries(assetModules).map(([path, module]: [string, any]) => ({
+  src: module.default,
+  title: path.split("/").pop()?.replace(/\.[^/.]+$/, "") || "Look",
+}));
+
+const looks = [...assets].sort((a, b) =>
+  a.src.endsWith(".mp4") === b.src.endsWith(".mp4") ? 0 : a.src.endsWith(".mp4") ? -1 : 1
+);
+const videos = looks.filter((item) => item.src.endsWith(".mp4"));
+const images = looks.filter((item) => !item.src.endsWith(".mp4"));
 
 const Collections = () => {
   return (
@@ -38,24 +36,46 @@ const Collections = () => {
       </section>
 
       <section className="px-6 lg:px-12 pb-24 lg:pb-32">
-        <div className="mx-auto max-w-7xl grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[360px]">
-          {looks.map((item) => (
-            <div
-              key={item.title}
-              className={`group relative overflow-hidden rounded-sm cursor-pointer ${item.span}`}
-            >
-              <img
-                src={item.src}
-                alt={item.title}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                loading="lazy"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
-                <p className="font-display text-lg text-foreground">{item.title}</p>
-              </div>
+        <div className="mx-auto max-w-7xl space-y-8">
+          {videos.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {videos.map((item, index) => (
+                <div
+                  key={item.src}
+                  className={`group relative overflow-hidden rounded-sm cursor-pointer aspect-[16/10] ${
+                    videos.length % 2 === 1 && index === videos.length - 1 ? "md:col-span-2" : ""
+                  }`}
+                >
+                  <video
+                    src={item.src}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                </div>
+              ))}
             </div>
-          ))}
+          )}
+
+          <div className="columns-1 md:columns-2 xl:columns-3 gap-4 [column-fill:_balance]">
+            {images.map((item) => (
+              <div
+                key={item.src}
+                className="group relative overflow-hidden rounded-sm cursor-pointer mb-4 break-inside-avoid"
+              >
+                <img
+                  src={item.src}
+                  alt={item.title}
+                  className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 

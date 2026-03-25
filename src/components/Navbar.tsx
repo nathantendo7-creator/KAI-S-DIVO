@@ -1,12 +1,16 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
+import logo from "@/assets/logo.jpg";
 
 const navLinks = [
   { to: "/", label: "Home" },
-  { to: "/about", label: "About" },
-  { to: "/collections", label: "Collections" },
+  { to: "/collections", label: "Collection" },
+  { to: "/mens", label: "Men's" },
+  { to: "/ladies", label: "Ladies" },
   { to: "/contact", label: "Contact" },
+  { to: "/about", label: "About" },
+  { to: "/corbata", label: "Corbata" },
 ];
 
 const Navbar = () => {
@@ -16,8 +20,15 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 glass">
       <div className="mx-auto max-w-7xl flex items-center justify-between px-6 py-4 lg:px-12">
-        <Link to="/" className="font-display text-lg tracking-[0.25em] uppercase text-foreground">
-          Kai's Divo
+        <Link to="/" className="flex items-center gap-3">
+          <img
+            src={logo}
+            alt="Kai's Divo Collection logo"
+            className="h-9 w-9 rounded-full object-cover border border-border/50"
+          />
+          <span className="font-display text-lg tracking-[0.2em] uppercase text-foreground">
+            Kai&apos;s Divo
+          </span>
         </Link>
 
         {/* Desktop */}
