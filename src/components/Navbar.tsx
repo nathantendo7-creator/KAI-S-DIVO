@@ -6,8 +6,6 @@ import logo from "@/assets/logo.jpg";
 const navLinks = [
   { to: "/", label: "Home" },
   { to: "/collections", label: "Collection" },
-  { to: "/mens", label: "Men's" },
-  { to: "/ladies", label: "Ladies" },
   { to: "/contact", label: "Contact" },
   { to: "/about", label: "About" },
   { to: "/corbata", label: "Corbata" },

@@ -8,8 +8,6 @@ import About from "./pages/About";
 import Collections from "./pages/Collections";
 import Contact from "./pages/Contact";
 import Corbata from "./pages/Corbata";
-import Mens from "./pages/Mens";
-import Ladies from "./pages/Ladies";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,8 +24,6 @@ const App = () => (
           <Route path="/collections" element={<Collections />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/corbata" element={<Corbata />} />
-          <Route path="/mens" element={<Mens />} />
-          <Route path="/ladies" element={<Ladies />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
