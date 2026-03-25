@@ -4,10 +4,12 @@ import Footer from "@/components/Footer";
 
 // Dynamically import all images/videos from the assets directory
 const assetModules = import.meta.glob("@/assets/*.{jpg,jpeg,png,mp4}", { eager: true });
-const assets = Object.entries(assetModules).map(([path, module]: [string, any]) => ({
-  src: module.default,
-  title: path.split("/").pop()?.replace(/\.[^/.]+$/, "") || "Look",
-}));
+const assets = Object.entries(assetModules)
+  .filter(([path]) => !path.includes("logo.jpg") && !path.includes("about_founder.jpg"))
+  .map(([path, module]: [string, any]) => ({
+    src: module.default,
+    title: path.split("/").pop()?.replace(/\.[^/.]+$/, "") || "Look",
+  }));
 
 const looks = [...assets].sort((a, b) =>
   a.src.endsWith(".mp4") === b.src.endsWith(".mp4") ? 0 : a.src.endsWith(".mp4") ? -1 : 1
