@@ -82,11 +82,11 @@ const Mens = () => {
             </div>
           )}
 
-          <div className="columns-1 md:columns-2 xl:columns-3 gap-4 [column-fill:_balance]">
+          <div className="flex flex-col gap-4 md:block md:columns-2 xl:columns-3 md:gap-4 md:space-y-0">
             {images.map((item) => (
               <div
                 key={item.src}
-                className="group relative overflow-hidden rounded-sm cursor-pointer mb-4 break-inside-avoid"
+                className="group relative overflow-hidden rounded-sm cursor-pointer md:mb-4 break-inside-avoid"
               >
                 <img
                   src={item.src}
