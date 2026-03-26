@@ -42,6 +42,8 @@ const Footer = () => (
               { to: "/mens", label: "Men's Collection" },
               { to: "/ladies", label: "Ladies Collection" },
               { to: "/about", label: "About Us" },
+              { to: "/contact", label: "Contact" },
+              { to: "/corbata", label: "Corbata" },
             ].map((link) => (
               <li key={link.to}>
                 <Link to={link.to} className="font-body text-sm text-muted-foreground hover:text-foreground transition-colors">
@@ -55,17 +57,34 @@ const Footer = () => (
         <div className="space-y-4">
           <h4 className="font-display text-sm uppercase tracking-widest text-foreground">Contact</h4>
           <ul className="space-y-3">
-            <li className="flex items-start gap-3 text-muted-foreground group">
-              <MapPin size={18} className="mt-0.5 group-hover:text-foreground transition-colors" />
-              <span className="font-body text-sm">Kampala, Uganda</span>
+            <li>
+              <a 
+                href="https://www.google.com/maps/search/?api=1&query=Kampala,Uganda" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-start gap-3 text-muted-foreground group hover:text-foreground transition-colors"
+              >
+                <MapPin size={18} className="mt-0.5" />
+                <span className="font-body text-sm">Kampala, Uganda</span>
+              </a>
             </li>
-            <li className="flex items-center gap-3 text-muted-foreground group">
-              <Phone size={18} className="group-hover:text-foreground transition-colors" />
-              <span className="font-body text-sm">+256 701 234 567</span>
+            <li>
+              <a 
+                href="tel:+256701234567" 
+                className="flex items-center gap-3 text-muted-foreground group hover:text-foreground transition-colors"
+              >
+                <Phone size={18} />
+                <span className="font-body text-sm">+256 701 234 567</span>
+              </a>
             </li>
-            <li className="flex items-center gap-3 text-muted-foreground group">
-              <Mail size={18} className="group-hover:text-foreground transition-colors" />
-              <span className="font-body text-sm text-wrap break-all">info@kaisdivocollection.com</span>
+            <li>
+              <a 
+                href="mailto:info@kaisdivocollection.com" 
+                className="flex items-center gap-3 text-muted-foreground group hover:text-foreground transition-colors"
+              >
+                <Mail size={18} />
+                <span className="font-body text-sm text-wrap break-all">info@kaisdivocollection.com</span>
+              </a>
             </li>
           </ul>
         </div>
