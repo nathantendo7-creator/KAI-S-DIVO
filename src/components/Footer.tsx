@@ -79,11 +79,11 @@ const Footer = () => (
             </li>
             <li>
               <a 
-                href="mailto:info@kaisdivocollection.com" 
+                href="mailto:abbkai18@gmail.com" 
                 className="flex items-center gap-3 text-muted-foreground group hover:text-foreground transition-colors"
               >
                 <Mail size={18} />
-                <span className="font-body text-sm text-wrap break-all">info@kaisdivocollection.com</span>
+                <span className="font-body text-sm text-wrap break-all">abbkai18@gmail.com</span>
               </a>
             </li>
           </ul>
