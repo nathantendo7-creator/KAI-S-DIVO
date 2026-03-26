@@ -71,18 +71,16 @@ const Navbar = () => {
 
       {/* Mobile overlay */}
       {open && (
-        <div className="md:hidden fixed inset-0 z-[60] bg-background flex flex-col items-center justify-center gap-8 overflow-hidden">
+        <div className="md:hidden fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center gap-8 overflow-hidden">
           {navLinks.map((link, index) => (
             <Link
               key={link.to}
               to={link.to}
               onClick={() => setOpen(false)}
-              className={`font-display text-4xl md:text-5xl tracking-[0.05em] transition-all duration-500 transform ${
-                open ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-              } ${
+              className={`font-display text-4xl md:text-5xl tracking-tight transition-all duration-500 ${
                 location.pathname === link.to
-                  ? "text-foreground"
-                  : "text-foreground/30 hover:text-foreground"
+                  ? "text-white opacity-100"
+                  : "text-white/40 hover:text-white"
               }`}
               style={{ transitionDelay: `${index * 50}ms` }}
             >
