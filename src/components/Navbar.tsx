@@ -62,16 +62,16 @@ const Navbar = () => {
         {/* Mobile toggle */}
         <button
           onClick={() => setOpen(!open)}
-          className="md:hidden text-foreground relative z-50"
+          className="md:hidden text-foreground relative z-[70]"
           aria-label="Toggle menu"
         >
-          {open ? <X size={20} /> : <Menu size={20} />}
+          {open ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
       {/* Mobile overlay */}
       {open && (
-        <div className="md:hidden fixed inset-0 z-[60] glass-strong flex flex-col items-center justify-center gap-10">
+        <div className="md:hidden fixed inset-0 z-[60] glass-strong flex flex-col items-center justify-start pt-32 gap-8 overflow-y-auto pb-10">
           {navLinks.map((link) => (
             <Link
               key={link.to}

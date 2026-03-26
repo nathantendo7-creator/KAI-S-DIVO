@@ -77,9 +77,9 @@
   }
 
   .glass-strong {
-    background: hsla(220 12% 5% / 0.98);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
+    background: hsla(220 12% 5% / 0.92);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
     border: 1px solid hsla(40 30% 85% / 0.1);
   }
 
