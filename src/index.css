@@ -77,10 +77,10 @@
   }
 
   .glass-strong {
-    background: hsla(40 35% 88% / 0.12);
-    backdrop-filter: blur(40px);
-    -webkit-backdrop-filter: blur(40px);
-    border: 1px solid hsla(40 30% 85% / 0.2);
+    background: hsla(220 12% 5% / 0.98);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid hsla(40 30% 85% / 0.1);
   }
 
   .service-card {
