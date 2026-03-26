@@ -11,10 +11,12 @@ import Autoplay from "embla-carousel-autoplay";
 const Index = () => {
   // Dynamically import images/videos for the hero slideshow
   const assetModules = import.meta.glob("@/assets/*.{jpg,jpeg,png,mp4}", { eager: true });
-  const assets = Object.entries(assetModules).map(([path, module]: [string, any]) => ({
-    src: module.default,
-    title: path.split("/").pop()?.replace(/\.[^/.]+$/, "") || "Look",
-  }));
+  const assets = Object.entries(assetModules)
+    .filter(([path]) => !path.includes("logo.jpg") && !path.includes("about_founder.jpg"))
+    .map(([path, module]: [string, any]) => ({
+      src: module.default,
+      title: path.split("/").pop()?.replace(/\.[^/.]+$/, "") || "Look",
+    }));
   const slides = assets.map((asset) => asset.src);
   const featuredLooks = assets
     .filter((asset) => !asset.src.endsWith(".mp4"))
