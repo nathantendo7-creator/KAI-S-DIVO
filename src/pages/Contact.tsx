@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { submitContactForm } from "@/lib/api";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Input } from "@/components/ui/input";
@@ -11,19 +13,36 @@ const meetingTypes = ["In-Person", "Video Call", "Phone Call"] as const;
 const Contact = () => {
   const { toast } = useToast();
   const [selected, setSelected] = useState<string>("In-Person");
-  const [sending, setSending] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setSending(true);
-    setTimeout(() => {
-      setSending(false);
+  const mutation = useMutation({
+    mutationFn: submitContactForm,
+    onSuccess: () => {
       toast({
         title: "Request received",
         description: "We'll be in touch shortly to confirm your meeting.",
       });
-      (e.target as HTMLFormElement).reset();
-    }, 1200);
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to send message. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const data = {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      phone: formData.get("phone"),
+      type: selected,
+      message: formData.get("message"),
+    };
+    mutation.mutate(data);
+    (e.target as HTMLFormElement).reset();
   };
 
   return (
@@ -112,6 +131,7 @@ const Contact = () => {
               </label>
               <Textarea
                 name="message"
+                required
                 rows={5}
                 placeholder="Tell us about your vision or what you're looking for..."
                 className="bg-transparent border-border/40 focus:border-foreground/30 rounded-sm font-body text-sm placeholder:text-muted-foreground resize-none"
@@ -120,10 +140,10 @@ const Contact = () => {
 
             <button
               type="submit"
-              disabled={sending}
+              disabled={mutation.isPending}
               className="w-full glass glass-hover py-4 font-body text-xs tracking-[0.2em] uppercase text-foreground transition-all duration-300 rounded-sm disabled:opacity-50"
             >
-              {sending ? "Sending..." : "Book a Meeting"}
+              {mutation.isPending ? "Sending..." : "Book a Meeting"}
             </button>
           </form>
 
