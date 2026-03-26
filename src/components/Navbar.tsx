@@ -29,8 +29,8 @@ const Navbar = () => {
   }, [open]);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 glass">
-      <div className="mx-auto max-w-7xl flex items-center justify-between px-6 py-4 lg:px-12 relative z-10">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border/10">
+      <div className="mx-auto max-w-7xl flex items-center justify-between px-6 py-4 lg:px-12 relative z-[110]">
         <Link to="/" className="flex items-center gap-3">
           <img
             src={logo}
@@ -62,22 +62,22 @@ const Navbar = () => {
         {/* Mobile toggle */}
         <button
           onClick={() => setOpen(!open)}
-          className="md:hidden text-foreground relative z-[70]"
+          className="md:hidden text-foreground relative z-[110] p-2"
           aria-label="Toggle menu"
         >
-          {open ? <X size={24} /> : <Menu size={24} />}
+          {open ? <X size={28} /> : <Menu size={28} />}
         </button>
       </div>
 
       {/* Mobile overlay */}
       {open && (
-        <div className="md:hidden fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center gap-8 overflow-hidden">
+        <div className="md:hidden fixed inset-0 z-[100] bg-black w-full h-screen flex flex-col items-center justify-center gap-8 px-6 overflow-hidden">
           {navLinks.map((link, index) => (
             <Link
               key={link.to}
               to={link.to}
               onClick={() => setOpen(false)}
-              className={`font-display text-4xl md:text-5xl tracking-tight transition-all duration-500 ${
+              className={`font-display text-3xl sm:text-4xl md:text-5xl tracking-tight transition-all duration-500 ${
                 location.pathname === link.to
                   ? "text-white opacity-100"
                   : "text-white/40 hover:text-white"
