@@ -11,7 +11,9 @@ import Contact from "./pages/Contact";
 import Corbata from "./pages/Corbata";
 import Mens from "./pages/Mens";
 import Ladies from "./pages/Ladies";
+import Stockist from "./pages/Stockist";
 import NotFound from "./pages/NotFound";
+import Layout from "./components/Layout";
 
 const queryClient = new QueryClient();
 
@@ -22,16 +24,19 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <ScrollToTop />
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/collections" element={<Collections />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/corbata" element={<Corbata />} />
-          <Route path="/mens" element={<Mens />} />
-          <Route path="/ladies" element={<Ladies />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <Layout>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/collections" element={<Collections />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/stockist" element={<Stockist />} />
+            <Route path="/corbata" element={<Corbata />} />
+            <Route path="/mens" element={<Mens />} />
+            <Route path="/ladies" element={<Ladies />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Layout>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

@@ -1,86 +1,47 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
+import Marquee from "@/components/Marquee";
+import Newsletter from "@/components/Newsletter";
+import aboutFounder from "@/assets/about_founder.jpg";
 
 const Index = () => {
-  // Dynamically import images/videos for the hero slideshow
+  const [activeDrop, setActiveDrop] = useState("06");
+
+  // Dynamically import assets
   const assetModules = import.meta.glob("@/assets/*.{jpg,jpeg,png,mp4}", { eager: true });
-  const assets = Object.entries(assetModules)
+  const allAssets = Object.entries(assetModules)
     .filter(([path]) => !path.includes("logo.jpg") && !path.includes("about_founder.jpg"))
     .map(([path, module]: [string, any]) => ({
       src: module.default,
-      title: path.split("/").pop()?.replace(/\.[^/.]+$/, "") || "Look",
+      name: path.split("/").pop()?.replace(/\.[^/.]+$/, "") || "Piece",
     }));
-  const slides = assets.map((asset) => asset.src);
-  const featuredLooks = assets
-    .filter((asset) => !asset.src.endsWith(".mp4"))
-    .slice(0, 3)
-    .map((asset, index) => ({
-      src: asset.src,
-      title: ["Evening Formal", "Editorial", "Bespoke Tailoring"][index] || asset.title,
-    }));
-  const services = [
-    {
-      title: "Bespoke Design",
-      text: "Custom garments crafted from concept to final fitting with precision tailoring and premium fabrics.",
-    },
-    {
-      title: "Styling Direction",
-      text: "Personal styling for events, editorials, and public appearances with a distinctive Kai's Divo edge.",
-    },
-    {
-      title: "Wardrobe Consultation",
-      text: "Refine your wardrobe strategy with guidance on silhouette, color story, and occasion-driven looks.",
-    },
-  ];
-  const journey = [
-    {
-      step: "01",
-      title: "Discovery Call",
-      text: "We discuss your occasion, preferences, and desired statement.",
-    },
-    {
-      step: "02",
-      title: "Creative Direction",
-      text: "Silhouettes, fabrics, and detailing are curated to match your identity.",
-    },
-    {
-      step: "03",
-      title: "Fittings",
-      text: "Precise measurements and fitting sessions ensure a flawless finish.",
-    },
-    {
-      step: "04",
-      title: "Final Delivery",
-      text: "Your bespoke look is completed and prepared for your defining moment.",
-    },
-  ];
+
+  const heroSlides = allAssets.slice(0, 5);
+  const dropNav = ["06", "05", "04", "03", "02", "01"];
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-
-      {/* Hero */}
-      <section className="relative h-screen flex items-end">
+    <div className="overflow-x-hidden bg-background">
+      {/* Cinematic Hero - Reverted to Fullscreen Slideshow */}
+      <section className="relative h-screen w-full overflow-hidden">
         <Carousel
-          className="absolute inset-0 w-full h-full"
+          className="w-full h-full"
           opts={{ loop: true }}
-          plugins={[Autoplay({ delay: 5000 })]}
+          plugins={[Autoplay({ delay: 6000 })]}
         >
-          <CarouselContent className="h-full">
-            {slides.map((src, index) => (
-              <CarouselItem key={index} className="h-full">
+          <CarouselContent className="h-screen -ml-0">
+            {heroSlides.map((asset, index) => (
+              <CarouselItem key={index} className="h-full w-full pl-0">
                 <div className="relative w-full h-full">
-                  {src.endsWith(".mp4") ? (
+                  {asset.src.endsWith(".mp4") ? (
                     <video
-                      src={src}
-                      className="w-full h-full object-cover object-top"
+                      src={asset.src}
+                      className="w-full h-full object-cover"
                       autoPlay
                       muted
                       loop
@@ -88,197 +49,140 @@ const Index = () => {
                     />
                   ) : (
                     <img
-                      src={src}
-                      alt="Hero slide"
-                      className="w-full h-full object-cover object-top"
+                      src={asset.src}
+                      alt="Hero"
+                      className="w-full h-full object-cover"
                     />
                   )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
+                  <div className="absolute inset-0 bg-black/10" />
                 </div>
               </CarouselItem>
             ))}
           </CarouselContent>
         </Carousel>
 
-        <div className="relative z-10 w-full px-6 lg:px-12 pb-20 lg:pb-28 max-w-7xl mx-auto">
-          <p className="font-body text-xs tracking-[0.3em] uppercase text-foreground/60 mb-4">
-            Redefining Elegance • Kampala
-          </p>
-          <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-medium text-foreground leading-[0.95] tracking-tight">
+        {/* Hero Text Overlay */}
+        <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
+          <h1 className="font-display text-[20vw] leading-none tracking-[-0.08em] uppercase text-white mix-blend-difference opacity-90">
             Kai's Divo
-            <br />
-            <span className="italic font-normal text-foreground/70">Collection</span>
           </h1>
-          <div className="mt-8 flex gap-4">
-            <Link
-              to="/contact"
-              className="glass glass-hover px-8 py-3 font-body text-xs tracking-[0.2em] uppercase text-foreground transition-all duration-300 rounded-sm"
-            >
-              Book a Consultation
-            </Link>
-            <Link
-              to="/collections"
-              className="px-8 py-3 font-body text-xs tracking-[0.2em] uppercase text-foreground/60 hover:text-foreground transition-colors rounded-sm border border-foreground/10"
-            >
-              View Collections
-            </Link>
+        </div>
+      </section>
+
+      {/* Volume 06 Section */}
+      <section className="py-32 px-6 lg:px-12 max-w-[1800px] mx-auto border-b border-foreground/5">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div className="lg:col-span-7 flex justify-center">
+             <div className="relative aspect-[3/4] w-full max-w-xl overflow-hidden shadow-2xl">
+                <img src={allAssets[5]?.src} className="w-full h-full object-cover" alt="Volume 06" />
+             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Brand Statement */}
-      <section className="py-24 lg:py-32 px-6 lg:px-12">
-        <div className="mx-auto max-w-3xl text-center">
-          <h2 className="font-display text-3xl md:text-4xl italic text-foreground/90 leading-relaxed">
-            "Where precision tailoring meets bold vision — crafting garments that command attention."
-          </h2>
-          <p className="font-body text-sm text-muted-foreground mt-8 max-w-xl mx-auto leading-relaxed">
-            Founded by Abbas Kaijuka in Kampala, Kai's Divo Collection is
-            East Africa's premier bespoke fashion house, dressing icons and
-            redefining contemporary African elegance.
-          </p>
-        </div>
-      </section>
-
-      {/* Featured Looks */}
-      <section className="px-6 lg:px-12 pb-24 lg:pb-32">
-        <div className="mx-auto max-w-7xl">
-          <p className="font-body text-xs tracking-[0.3em] uppercase text-muted-foreground mb-10">
-            Featured Looks
-          </p>
-          <Carousel
-            opts={{ loop: true, align: "start" }}
-            plugins={[Autoplay({ delay: 2600, stopOnInteraction: false, stopOnMouseEnter: true })]}
-          >
-            <CarouselContent className="-ml-4">
-              {featuredLooks.map((item) => (
-                <CarouselItem key={item.title} className="pl-4 basis-full md:basis-1/2 lg:basis-1/3">
-                  <Link to="/collections" className="group relative block aspect-[3/4] overflow-hidden rounded-sm">
-                    <img
-                      src={item.src}
-                      alt={item.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-background/65 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  </Link>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-          </Carousel>
-        </div>
-      </section>
-
-      {/* Signature Services */}
-      <section className="px-6 lg:px-12 pb-24 lg:pb-32 border-t border-border/20 pt-24 lg:pt-28">
-        <div className="mx-auto max-w-7xl">
-          <div className="max-w-2xl mb-12 lg:mb-16">
-            <p className="font-body text-xs tracking-[0.3em] uppercase text-muted-foreground mb-4">
-              Signature Services
-            </p>
-            <h2 className="font-display text-3xl md:text-5xl text-foreground leading-tight">
-              Tailored experiences designed around your identity
-            </h2>
-          </div>
-
-          <Carousel
-            opts={{ loop: true, align: "start" }}
-            plugins={[Autoplay({ delay: 2200, stopOnInteraction: false, stopOnMouseEnter: true })]}
-          >
-            <CarouselContent className="-ml-4">
-              {services.map((item, index) => (
-                <CarouselItem key={item.title} className="pl-4 basis-full md:basis-1/2 lg:basis-1/3">
-                  <article
-                    className="service-card glass rounded-sm p-8 lg:p-10 space-y-4 h-full"
-                    style={{ animationDelay: `${index * 120}ms` }}
-                  >
-                    <h3 className="font-display text-xl text-foreground">{item.title}</h3>
-                    <p className="font-body text-sm text-foreground/65 leading-relaxed">{item.text}</p>
-                  </article>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-          </Carousel>
-        </div>
-      </section>
-
-      {/* Consultation Process */}
-      <section className="px-6 lg:px-12 pb-24 lg:pb-32">
-        <div className="mx-auto max-w-7xl">
-          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-12 lg:mb-14">
-            <div className="max-w-2xl">
-              <p className="font-body text-xs tracking-[0.3em] uppercase text-muted-foreground mb-4">
-                Consultation Journey
+          <div className="lg:col-span-5 space-y-12">
+            <h2 className="text-[20vw] lg:text-[15vw] leading-none font-display tracking-tighter opacity-10">06</h2>
+            <div className="space-y-6 max-w-md">
+              <p className="font-body text-sm md:text-base text-foreground leading-relaxed">
+                Drop 6: Minimalist retro elegance, where timeless closet pieces are reborn with a modern edge.
               </p>
-              <h2 className="font-display text-3xl md:text-5xl text-foreground leading-tight">
-                A refined process from vision to final reveal
-              </h2>
+              <Link
+                to="/collections"
+                className="inline-block border-b border-foreground pb-2 font-body text-xs tracking-widest uppercase hover:opacity-60 transition-opacity"
+              >
+                Galerie
+              </Link>
             </div>
-            <Link
-              to="/contact"
-              className="glass glass-hover px-8 py-3 font-body text-xs tracking-[0.2em] uppercase text-foreground transition-all duration-300 rounded-sm w-fit"
-            >
-              Start Your Booking
-            </Link>
-          </div>
-
-          <Carousel
-            opts={{ loop: true, align: "start" }}
-            plugins={[Autoplay({ delay: 2100, stopOnInteraction: false, stopOnMouseEnter: true })]}
-          >
-            <CarouselContent className="-ml-4">
-              {journey.map((item) => (
-                <CarouselItem key={item.step} className="pl-4 basis-full md:basis-1/2 lg:basis-1/4">
-                  <article className="border border-border/40 rounded-sm p-7 lg:p-8 space-y-4 h-full bg-card/30">
-                    <p className="font-body text-xs tracking-[0.25em] uppercase text-foreground/40">{item.step}</p>
-                    <h3 className="font-display text-xl text-foreground">{item.title}</h3>
-                    <p className="font-body text-sm text-foreground/60 leading-relaxed">{item.text}</p>
-                  </article>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-          </Carousel>
-        </div>
-      </section>
-
-      {/* Editorial Highlight */}
-      <section className="px-6 lg:px-12 pb-24 lg:pb-32">
-        <div className="mx-auto max-w-7xl">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {featuredLooks.slice(0, 2).map((item) => (
-              <div key={item.title} className="relative h-[420px] lg:h-[520px] overflow-hidden rounded-sm group">
-                <img
-                  src={item.src}
-                  alt={item.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
-              </div>
-            ))}
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-24 lg:py-32 px-6 lg:px-12 border-t border-border/20">
-        <div className="mx-auto max-w-4xl text-center">
-          <h2 className="font-display text-3xl md:text-5xl text-foreground mb-4">
-            Ready to elevate your style?
+      {/* Curated Pieces */}
+      <section className="py-32 px-6 lg:px-12">
+        <div className="mx-auto max-w-[1800px]">
+          <h2 className="font-display text-3xl uppercase tracking-tighter mb-16">Curated Pieces</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="aspect-[16/9] overflow-hidden bg-muted relative group">
+              <img src={allAssets[6]?.src} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" alt="Curated" />
+              <div className="absolute inset-0 bg-black/5" />
+            </div>
+            <div className="aspect-[16/9] overflow-hidden bg-muted relative group">
+              <img src={allAssets[7]?.src} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" alt="Curated" />
+              <div className="absolute inset-0 bg-black/5" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Animated Marquee */}
+      <div className="border-y border-foreground/10">
+        <Marquee text=". redifining contemporary elegance . precision tailoring . handcrafted in kampala . bespoke design . styling direction ." />
+      </div>
+
+      {/* Modern Twists - Full width Image Section */}
+      <section className="relative min-h-[80vh] flex items-center justify-center py-32 overflow-hidden">
+        <div className="absolute inset-0">
+          <img src={allAssets[10]?.src} className="w-full h-full object-cover" alt="Background" />
+          <div className="absolute inset-0 bg-black/20" />
+        </div>
+        <div className="relative z-10 text-center px-6">
+          <h2 className="font-display text-5xl md:text-8xl text-white uppercase tracking-tighter leading-none max-w-4xl mx-auto">
+            modern twists <br /> on classical elegance
           </h2>
-          <p className="font-body text-sm text-muted-foreground mb-10">
-            Book a private consultation — in person at our Kampala studio or virtually.
-          </p>
-          <Link
-            to="/contact"
-            className="inline-block glass glass-hover px-10 py-4 font-body text-xs tracking-[0.2em] uppercase text-foreground transition-all duration-300 rounded-sm"
+        </div>
+      </section>
+
+      {/* Drop Selection Navigation */}
+      <section className="py-32 px-6 lg:px-12 bg-background border-t border-foreground/5">
+        <div className="mx-auto max-w-[1800px] grid grid-cols-1 lg:grid-cols-12 gap-24 items-center">
+           <div className="lg:col-span-8">
+             <div className="aspect-video overflow-hidden shadow-2xl">
+                <img src={allAssets[12]?.src} className="w-full h-full object-cover" alt="Drop View" />
+             </div>
+           </div>
+           <div className="lg:col-span-4 flex flex-col gap-6 items-end">
+              {dropNav.map((id) => (
+                <button
+                  key={id}
+                  onClick={() => setActiveDrop(id)}
+                  className={`font-display text-4xl md:text-6xl uppercase tracking-tighter transition-all duration-300 ${
+                    activeDrop === id ? "text-foreground italic underline underline-offset-8" : "text-foreground/20 hover:text-foreground"
+                  }`}
+                >
+                  Drop {id}
+                </button>
+              ))}
+              <div className="mt-8">
+                <Link 
+                  to="/collections" 
+                  className="inline-block border border-foreground px-12 py-5 font-body text-[10px] tracking-[0.4em] uppercase hover:bg-foreground hover:text-background transition-all duration-500"
+                >
+                  View Drop {activeDrop}
+                </Link>
+              </div>
+           </div>
+        </div>
+      </section>
+
+      {/* Inner List Signup */}
+      <Newsletter />
+
+      {/* Final Branding CTA */}
+      <section className="py-40 bg-foreground text-background text-center px-6 overflow-hidden">
+        <div className="relative z-10">
+          <h2 className="font-display text-4xl md:text-7xl uppercase tracking-tighter mb-12 max-w-4xl mx-auto leading-tight italic">
+            "Redefining contemporary elegance through precision tailoring."
+          </h2>
+          <Link 
+            to="/contact" 
+            className="inline-block border border-background/30 px-12 py-5 font-body text-[10px] tracking-[0.4em] uppercase hover:bg-background hover:text-foreground transition-all duration-500"
           >
-            Book a Meeting
+            Start Your Journey
           </Link>
         </div>
+        <div className="mt-40">
+           <h1 className="huge-text opacity-5 text-background pointer-events-none select-none whitespace-nowrap">
+            Kai's Divo
+          </h1>
+        </div>
       </section>
-
-      <Footer />
     </div>
   );
 };

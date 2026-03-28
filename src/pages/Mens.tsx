@@ -1,12 +1,8 @@
 import { Link } from "react-router-dom";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 
 const Mens = () => {
-  // Specifically target assets for the Men's collection
   const assetModules = import.meta.glob("@/assets/*.{jpg,jpeg,png,mp4}", { eager: true });
   
-  // List of filenames identified from the MEN directory
   const mensFilenames = [
     "happybd.mp4",
     "newvideo.mp4",
@@ -28,27 +24,20 @@ const Mens = () => {
   const mensAssets = Object.entries(assetModules)
     .filter(([path]) => mensFilenames.some(filename => path.endsWith(filename)))
     .map(([path, module]: [string, any]) => ({
+      id: `men-${path.split("/").pop()}`,
       src: module.default,
-      title: path.split("/").pop()?.replace(/\.[^/.]+$/, "") || "Look",
+      name: path.split("/").pop()?.replace(/\.[^/.]+$/, "").replace("SaveClip.App_", "").slice(0, 15) || "Look"
     }));
 
-  const looks = [...mensAssets].sort((a, b) =>
-    a.src.endsWith(".mp4") === b.src.endsWith(".mp4") ? 0 : a.src.endsWith(".mp4") ? -1 : 1
-  );
-  const videos = looks.filter((item) => item.src.endsWith(".mp4"));
-  const images = looks.filter((item) => !item.src.endsWith(".mp4"));
-
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-
-      <section className="pt-32 pb-16 px-6 lg:px-12">
+    <div className="bg-background">
+      <section className="pt-24 pb-16 px-6 lg:px-12">
         <div className="mx-auto max-w-7xl">
-          <p className="font-body text-xs tracking-[0.3em] uppercase text-muted-foreground mb-4">
+          <p className="font-body text-[10px] tracking-[0.4em] uppercase text-muted-foreground mb-4">
             Menswear
           </p>
-          <h1 className="font-display text-5xl md:text-7xl text-foreground leading-[0.95]">
-            Men's Collection
+          <h1 className="font-display text-5xl md:text-7xl text-foreground leading-[0.95] uppercase tracking-tighter">
+            Men's <span className="italic">Collection</span>
           </h1>
           <p className="font-body text-sm text-muted-foreground mt-6 max-w-lg leading-relaxed">
             Epitomizing structural precision and modern masculinity — our bespoke tailoring 
@@ -58,43 +47,32 @@ const Mens = () => {
       </section>
 
       <section className="px-6 lg:px-12 pb-24 lg:pb-32">
-        <div className="mx-auto max-w-7xl space-y-8">
-          {videos.length > 0 && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {videos.map((item, index) => (
-                <div
-                  key={item.src}
-                  className={`group relative overflow-hidden rounded-sm cursor-pointer aspect-[16/10] ${
-                    videos.length % 2 === 1 && index === videos.length - 1 ? "md:col-span-2" : ""
-                  }`}
-                >
-                  <video
-                    src={item.src}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        <div className="mx-auto max-w-7xl">
+          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-12 lg:gap-x-8">
+            {mensAssets.map((item) => (
+              <div key={item.id} className="group flex flex-col gap-4">
+                <div className="relative aspect-[3/4] bg-muted overflow-hidden">
+                  {item.src.endsWith(".mp4") ? (
+                    <video
+                      src={item.src}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      autoPlay muted loop playsInline
+                    />
+                  ) : (
+                    <img
+                      src={item.src}
+                      alt={item.name}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                  )}
+                  <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <Link to="/contact" className="bg-foreground text-background px-6 py-2 font-body text-[10px] uppercase tracking-widest translate-y-4 group-hover:translate-y-0 transition-all duration-500">
+                      Inquire
+                    </Link>
+                  </div>
                 </div>
-              ))}
-            </div>
-          )}
-
-          <div className="flex flex-col gap-4 md:block md:columns-2 xl:columns-3 md:gap-4 md:space-y-0">
-            {images.map((item) => (
-              <div
-                key={item.src}
-                className="group relative overflow-hidden rounded-sm cursor-pointer md:mb-4 break-inside-avoid"
-              >
-                <img
-                  src={item.src}
-                  alt={item.title}
-                  className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <h3 className="font-display text-[10px] uppercase tracking-[0.2em] text-muted-foreground">{item.name}</h3>
               </div>
             ))}
           </div>
@@ -102,24 +80,19 @@ const Mens = () => {
       </section>
 
       {/* CTA */}
-      <section className="py-20 px-6 lg:px-12 border-t border-border/20">
+      <section className="py-32 px-6 lg:px-12 border-t border-border/10">
         <div className="mx-auto max-w-3xl text-center">
-          <h2 className="font-display text-2xl md:text-4xl text-foreground mb-4">
-            Command Attention
+          <h2 className="font-display text-3xl md:text-5xl text-foreground mb-8 uppercase tracking-tighter">
+            Command <span className="italic">Attention</span>
           </h2>
-          <p className="font-body text-sm text-muted-foreground mb-8">
-            Experience the pinnacle of bespoke tailoring.
-          </p>
           <Link
             to="/contact"
-            className="inline-block glass glass-hover px-10 py-4 font-body text-xs tracking-[0.2em] uppercase text-foreground transition-all duration-300 rounded-sm"
+            className="inline-block border border-foreground px-10 py-4 font-body text-[10px] tracking-[0.3em] uppercase hover:bg-foreground hover:text-background transition-all duration-500"
           >
             Start Your Journey
           </Link>
         </div>
       </section>
-
-      <Footer />
     </div>
   );
 };

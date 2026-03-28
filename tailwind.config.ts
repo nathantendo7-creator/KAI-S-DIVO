@@ -63,6 +63,10 @@ export default {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      letterSpacing: {
+        "widest-xl": "0.3em",
+        "widest-2xl": "0.5em",
+      },
       keyframes: {
         "accordion-down": {
           from: {
@@ -80,10 +84,20 @@ export default {
             height: "0",
           },
         },
+        marquee: {
+          "0%": { transform: "translateX(0%)" },
+          "100%": { transform: "translateX(-100%)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        marquee: "marquee 25s linear infinite",
+      },
+      fontFamily: {
+        display: ["Bigra", "serif"],
+        body: ["Sora", "sans-serif"],
+        luxe: ["Biscotti", "cursive"],
       },
     },
   },

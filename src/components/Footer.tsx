@@ -1,111 +1,79 @@
 import { Instagram, Mail, Phone, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
-import logo from "@/assets/logo.jpg";
 
 const Footer = () => (
-  <footer className="border-t border-border/30 pt-16 pb-8 px-6 lg:px-12 bg-background">
-    <div className="mx-auto max-w-7xl">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
-        <div className="space-y-4">
-          <div className="flex items-center gap-3">
-            <img
-              src={logo}
-              alt="Kai's Divo Collection logo"
-              className="h-10 w-10 rounded-full object-cover border border-border/50"
-            />
-            <p className="font-display text-lg tracking-[0.1em] uppercase text-foreground">
-              Kai&apos;s Divo
-            </p>
-          </div>
-          <p className="font-body text-sm text-muted-foreground leading-relaxed max-w-xs">
-            East Africa&apos;s premier bespoke fashion house, where precision tailoring meets bold vision.
-          </p>
-          <div className="flex gap-4 pt-2">
-            <a
-              href="https://instagram.com/kais_divo_collection"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-foreground/50 hover:text-foreground transition-colors"
-              aria-label="Instagram"
-            >
-              <Instagram size={20} />
-            </a>
-          </div>
-        </div>
-
-        <div className="space-y-4">
-          <h4 className="font-display text-sm uppercase tracking-widest text-foreground">Quick Links</h4>
-          <ul className="space-y-2">
-            {[
-              { to: "/", label: "Home" },
-              { to: "/collections", label: "Collections" },
-              { to: "/mens", label: "Men's Collection" },
-              { to: "/ladies", label: "Ladies Collection" },
-              { to: "/about", label: "About Us" },
-              { to: "/contact", label: "Contact" },
-              { to: "/corbata", label: "Corbata" },
-            ].map((link) => (
-              <li key={link.to}>
-                <Link to={link.to} className="font-body text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  {link.label}
+  <footer className="pt-32 pb-16 px-6 lg:px-12 bg-background border-t border-foreground/5">
+    <div className="mx-auto max-w-[1800px]">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-24">
+        {/* Drops */}
+        <div className="space-y-8">
+          <h4 className="font-display text-xs uppercase tracking-[0.4em] text-foreground">Drops</h4>
+          <ul className="space-y-4">
+            {["Drop 6", "Drop 5", "Drop 4", "Drop 3"].map((label) => (
+              <li key={label}>
+                <Link to="/collections" className="nav-link text-[10px] lowercase tracking-widest">
+                  {label}
                 </Link>
               </li>
             ))}
           </ul>
         </div>
 
-        <div className="space-y-4">
-          <h4 className="font-display text-sm uppercase tracking-widest text-foreground">Contact</h4>
-          <ul className="space-y-3">
-            <li>
-              <a 
-                href="https://www.google.com/maps/search/?api=1&query=Kampala,Uganda" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="flex items-start gap-3 text-muted-foreground group hover:text-foreground transition-colors"
-              >
-                <MapPin size={18} className="mt-0.5" />
-                <span className="font-body text-sm">Kampala, Uganda</span>
-              </a>
-            </li>
-            <li>
-              <a 
-                href="tel:+256701234567" 
-                className="flex items-center gap-3 text-muted-foreground group hover:text-foreground transition-colors"
-              >
-                <Phone size={18} />
-                <span className="font-body text-sm">+256 701 234 567</span>
-              </a>
-            </li>
-            <li>
-              <a 
-                href="mailto:abbkai18@gmail.com" 
-                className="flex items-center gap-3 text-muted-foreground group hover:text-foreground transition-colors"
-              >
-                <Mail size={18} />
-                <span className="font-body text-sm text-wrap break-all">abbkai18@gmail.com</span>
-              </a>
-            </li>
+        {/* Stores */}
+        <div className="space-y-8">
+          <h4 className="font-display text-xs uppercase tracking-[0.4em] text-foreground">Stores</h4>
+          <ul className="space-y-4">
+            {["H. LORENZO", "CURVE"].map((label) => (
+              <li key={label}>
+                <Link to="/contact" className="nav-link text-[10px] lowercase tracking-widest">
+                  {label}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
 
-        <div className="space-y-4">
-          <h4 className="font-display text-sm uppercase tracking-widest text-foreground">Studio Hours</h4>
-          <ul className="space-y-2 text-sm font-body text-muted-foreground">
-            <li>Mon - Fri: 9:00 AM - 6:00 PM</li>
-            <li>Saturday: 10:00 AM - 4:00 PM</li>
-            <li>Sunday: Closed</li>
+        {/* Information */}
+        <div className="space-y-8">
+          <h4 className="font-display text-xs uppercase tracking-[0.4em] text-foreground">Information</h4>
+          <ul className="space-y-4">
+            {["Contact", "Returns and Refunds", "Privacy Policy", "Terms of Service"].map((label) => (
+              <li key={label}>
+                <Link to="/contact" className="nav-link text-[10px] lowercase tracking-widest">
+                  {label}
+                </Link>
+              </li>
+            ))}
           </ul>
+        </div>
+
+        {/* About */}
+        <div className="space-y-8">
+          <h4 className="font-display text-xs uppercase tracking-[0.4em] text-foreground">About Us</h4>
+          <div className="space-y-6">
+            <p className="font-body text-[11px] text-foreground/60 leading-relaxed uppercase tracking-wider">
+              Kai's Divo is the premier bespoke fashion house in Kampala, founded by creative director Abbas Kaijuka.
+            </p>
+            <p className="font-body text-[11px] text-foreground/60 leading-relaxed uppercase tracking-wider">
+              Redefining contemporary elegance through precision tailoring and a commitment to focused narratives.
+            </p>
+          </div>
         </div>
       </div>
 
-      <div className="pt-8 border-t border-border/10 flex flex-col md:flex-row justify-between items-center gap-4">
-        <p className="font-body text-xs text-muted-foreground">
-          © {new Date().getFullYear()} Kai's Divo Collection. All rights reserved.
-        </p>
-        <div className="flex gap-6">
-          <Link to="/contact" className="font-body text-xs text-muted-foreground hover:text-foreground">Privacy Policy</Link>
-          <Link to="/contact" className="font-body text-xs text-muted-foreground hover:text-foreground">Terms of Service</Link>
+      <div className="pt-24 flex flex-col items-center gap-12">
+        <div className="flex gap-8">
+          <a href="#" className="text-foreground/40 hover:text-foreground transition-colors"><Instagram size={18} /></a>
+          <a href="#" className="text-foreground/40 hover:text-foreground transition-colors"><Mail size={18} /></a>
+        </div>
+        
+        <div className="text-center space-y-8 w-full overflow-hidden">
+          <p className="font-body text-[9px] tracking-[0.3em] uppercase opacity-40">
+            © 2026. KAI'S DIVO
+          </p>
+          <h1 className="huge-text opacity-10 select-none pointer-events-none whitespace-nowrap translate-y-12">
+            Kai's Divo
+          </h1>
         </div>
       </div>
     </div>

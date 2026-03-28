@@ -2,50 +2,71 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Biscotti';
+  src: url('./assets/fonts/biscotti.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Bigra';
+  src: url('./assets/fonts/bigra.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Sora';
+  src: url('./assets/fonts/sora.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 @layer base {
   :root {
-    --background: 220 12% 5%;
-    --foreground: 42 35% 93%;
+    --background: 0 0% 82%; /* #D2D2D2 - matches the video background */
+    --foreground: 0 0% 0%;
 
-    --card: 220 10% 8%;
-    --card-foreground: 42 30% 92%;
+    --card: 0 0% 82%;
+    --card-foreground: 0 0% 0%;
 
-    --popover: 220 10% 8%;
-    --popover-foreground: 42 30% 92%;
+    --popover: 0 0% 82%;
+    --popover-foreground: 0 0% 0%;
 
-    --primary: 42 34% 88%;
-    --primary-foreground: 220 12% 8%;
+    --primary: 0 0% 0%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 218 11% 16%;
-    --secondary-foreground: 42 30% 92%;
+    --secondary: 0 0% 75%;
+    --secondary-foreground: 0 0% 0%;
 
-    --muted: 220 8% 14%;
-    --muted-foreground: 42 12% 67%;
+    --muted: 0 0% 70%;
+    --muted-foreground: 0 0% 30%;
 
-    --accent: 38 24% 22%;
-    --accent-foreground: 42 35% 93%;
+    --accent: 0 0% 65%;
+    --accent-foreground: 0 0% 0%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 96%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 42 15% 22%;
-    --input: 42 10% 20%;
-    --ring: 40 28% 60%;
+    --border: 0 0% 0% / 0.1;
+    --input: 0 0% 0% / 0.1;
+    --ring: 0 0% 0%;
 
-    --radius: 0.75rem;
+    --radius: 0rem;
 
-    --glass: 40 45% 90% / 0.06;
-    --glass-border: 40 35% 82% / 0.16;
-    --glass-hover: 40 35% 82% / 0.13;
+    --glass: 0 0% 82% / 0.8;
+    --glass-border: 0 0% 0% / 0.1;
+    --glass-hover: 0 0% 0% / 0.05;
 
-    --sidebar-background: 220 12% 7%;
-    --sidebar-foreground: 42 35% 93%;
-    --sidebar-primary: 42 34% 88%;
-    --sidebar-primary-foreground: 220 12% 8%;
-    --sidebar-accent: 220 9% 16%;
-    --sidebar-accent-foreground: 42 30% 92%;
-    --sidebar-border: 42 15% 22%;
-    --sidebar-ring: 40 28% 60%;
+    --sidebar-background: 0 0% 82%;
+    --sidebar-foreground: 0 0% 0%;
+    --sidebar-primary: 0 0% 0%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 78%;
+    --sidebar-accent-foreground: 0 0% 0%;
+    --sidebar-border: 0 0% 0% / 0.1;
+    --sidebar-ring: 0 0% 0%;
   }
 }
 
@@ -56,13 +77,25 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Sora', sans-serif;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Bigra', serif;
+    font-weight: 400;
   }
 }
+
+@layer components {
+  .nav-link {
+    @apply font-body text-[11px] tracking-[0.2em] uppercase text-foreground/60 hover:text-foreground transition-all duration-300;
+  }
+
+  .huge-text {
+    @apply font-display text-[15vw] leading-[0.8] tracking-tighter uppercase;
+  }
+}
+
 
 @layer components {
   .glass {
@@ -127,11 +160,18 @@
 }
 
 @layer utilities {
-  .font-display {
-    font-family: 'Playfair Display', serif;
+  .marquee-content {
+    display: flex;
+    white-space: nowrap;
+    animation: marquee 30s linear infinite;
   }
 
-  .font-body {
-    font-family: 'Inter', sans-serif;
+  .marquee-content:hover {
+    animation-play-state: paused;
   }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }

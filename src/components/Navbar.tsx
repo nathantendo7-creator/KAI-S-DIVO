@@ -1,16 +1,12 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
-import logo from "@/assets/logo.jpg";
+import { Menu, X, Search, ShoppingBag } from "lucide-react";
 
 const navLinks = [
-  { to: "/", label: "Home" },
-  { to: "/collections", label: "Collection" },
-  { to: "/mens", label: "Men's" },
-  { to: "/ladies", label: "Ladies" },
-  { to: "/contact", label: "Contact" },
+  { to: "/collections", label: "Galerie" },
   { to: "/about", label: "About" },
-  { to: "/corbata", label: "Corbata" },
+  { to: "/contact", label: "Contact" },
+  { to: "/stockist", label: "Stockist" },
 ];
 
 const Navbar = () => {
@@ -29,29 +25,23 @@ const Navbar = () => {
   }, [open]);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border/10">
-      <div className="mx-auto max-w-7xl flex items-center justify-between px-6 py-4 lg:px-12 relative z-[110]">
-        <Link to="/" className="flex items-center gap-3">
-          <img
-            src={logo}
-            alt="Kai's Divo Collection logo"
-            className="h-9 w-9 rounded-full object-cover border border-border/50"
-          />
-          <span className="font-display text-lg tracking-[0.2em] uppercase text-foreground">
-            Kai&apos;s Divo
+    <nav className="fixed top-0 left-0 right-0 z-[150] bg-background border-b border-foreground/10">
+      <div className="mx-auto max-w-[1800px] flex items-center justify-between px-6 py-6 lg:px-12 relative z-[110]">
+        {/* Left: Logo */}
+        <Link to="/" className="flex items-center">
+          <span className="font-display text-2xl tracking-tighter uppercase text-foreground font-semibold">
+            Kai's Divo
           </span>
         </Link>
 
-        {/* Desktop */}
-        <div className="hidden md:flex items-center gap-10">
+        {/* Center: Desktop Nav */}
+        <div className="hidden md:flex items-center gap-12 absolute left-1/2 -translate-x-1/2">
           {navLinks.map((link) => (
             <Link
-              key={link.to}
+              key={link.to + link.label}
               to={link.to}
-              className={`font-body text-xs tracking-[0.2em] uppercase transition-opacity duration-300 ${
-                location.pathname === link.to
-                  ? "text-foreground opacity-100"
-                  : "text-foreground/60 hover:opacity-100"
+              className={`nav-link font-bold text-foreground hover:opacity-60 transition-all duration-300 ${
+                location.pathname === link.to ? "opacity-100" : "opacity-80"
               }`}
             >
               {link.label}
@@ -59,28 +49,33 @@ const Navbar = () => {
           ))}
         </div>
 
-        {/* Mobile toggle */}
-        <button
-          onClick={() => setOpen(!open)}
-          className="md:hidden text-foreground relative z-[110] p-2"
-          aria-label="Toggle menu"
-        >
-          {open ? <X size={28} /> : <Menu size={28} />}
-        </button>
+        {/* Right: Icons */}
+        <div className="flex items-center gap-6">
+          <button className="text-foreground hover:opacity-60 transition-all">
+            <Search size={20} />
+          </button>
+          <button
+            onClick={() => setOpen(!open)}
+            className="md:hidden text-foreground p-1"
+            aria-label="Toggle menu"
+          >
+            {open ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile overlay */}
       {open && (
-        <div className="md:hidden fixed inset-0 z-[100] bg-black w-full h-screen flex flex-col items-center justify-center gap-8 px-6 overflow-hidden">
+        <div className="md:hidden fixed inset-0 z-[100] bg-background w-full h-screen flex flex-col items-center justify-center gap-8 px-6 overflow-hidden animate-in fade-in duration-300">
           {navLinks.map((link, index) => (
             <Link
-              key={link.to}
+              key={link.to + link.label}
               to={link.to}
               onClick={() => setOpen(false)}
-              className={`font-display text-3xl sm:text-4xl md:text-5xl tracking-tight transition-all duration-500 ${
+              className={`font-display text-4xl tracking-tight transition-all duration-500 ${
                 location.pathname === link.to
-                  ? "text-white opacity-100"
-                  : "text-white/40 hover:text-white"
+                  ? "text-foreground opacity-100"
+                  : "text-foreground/40 hover:text-foreground"
               }`}
               style={{ transitionDelay: `${index * 50}ms` }}
             >
