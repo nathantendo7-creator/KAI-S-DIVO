@@ -36,6 +36,32 @@ const About = () => {
         </div>
       </section>
 
+      {/* Founder Bio Section */}
+      <section className="py-24 px-6 lg:px-12 max-w-7xl mx-auto border-t border-foreground/5">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          <div className="lg:col-span-4">
+            <h2 className="font-display text-2xl uppercase tracking-widest text-foreground/40">Founder & Creative Director</h2>
+          </div>
+          <div className="lg:col-span-8 space-y-8">
+            <h3 className="font-display text-3xl md:text-4xl uppercase tracking-tighter">Abbas Kaijuka – Founder of Kai’s Divo</h3>
+            <div className="font-body text-sm md:text-base text-muted-foreground space-y-6 leading-relaxed">
+              <p>
+                Abbas Kaijuka is the visionary founder and lead designer behind <strong>Kai’s Divo</strong>, one of East Africa’s most celebrated fashion houses. Based in Kampala, Uganda, Kai’s Divo is renowned for its flawless fusion of Ugandan heritage and contemporary global style, offering custom designs in haute couture, ready-to-wear, and streetwear for men and women.
+              </p>
+              <p>
+                Under Abbas’s creative direction, Kai’s Divo has dressed Uganda’s biggest celebrities—including Eddy Kenzo (whose Grammy 2023 outfit he designed), Spice Diana, Sheebah Karungi, and Chameleone—while earning seven major international awards, including <em>Fashion Designer of the Year</em> at the Odartey Style Fashion Awards (Ghana, 2022) and <em>Best Fashion Brand in Africa</em> (2021).
+              </p>
+              <p>
+                The brand’s signature aesthetic blends clean tailoring, bold color, and minimal prints with traditional Ugandan textiles like kikoy, creating timeless yet modern looks that have graced runways from Kampala to Lagos and Dar es Salaam. In 2024, Kai’s Divo unveiled “Corbata,” a monochrome tribute to the tuxedo that reaffirmed the brand’s mastery of elegant, structure-driven design.
+              </p>
+              <p>
+                Kai’s Divo is more than a fashion label—it’s a movement celebrating Ugandan identity, craftsmanship, and confidence on the world stage.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Philosophy Statement */}
       <section className="py-32 bg-foreground text-background">
         <div className="px-6 lg:px-12 max-w-7xl mx-auto">
