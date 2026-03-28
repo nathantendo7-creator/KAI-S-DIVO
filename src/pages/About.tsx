@@ -25,25 +25,28 @@ const About = () => {
         </div>
       </section>
 
-      {/* Large Image Section */}
-      <section className="px-6 lg:px-12 mb-32 max-w-5xl mx-auto">
-        <div className="relative overflow-hidden">
-          <img 
-            src={aboutFounder} 
-            alt="Abbas Kaijuka - Creative Director" 
-            className="w-full h-auto transition-all duration-1000"
-          />
-        </div>
-      </section>
-
-      {/* Founder Bio Section */}
+      {/* Founder Bio Section - Side by Side Layout */}
       <section className="py-24 px-6 lg:px-12 max-w-7xl mx-auto border-t border-foreground/5">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-          <div className="lg:col-span-4">
-            <h2 className="font-display text-2xl uppercase tracking-widest text-foreground/40">Founder & Creative Director</h2>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+          {/* Left Side: Image */}
+          <div className="relative overflow-hidden shadow-2xl">
+            <img 
+              src={aboutFounder} 
+              alt="Abbas Kaijuka - Creative Director" 
+              className="w-full h-auto transition-all duration-1000 hover:scale-105"
+            />
           </div>
-          <div className="lg:col-span-8 space-y-8">
-            <h3 className="font-display text-3xl md:text-4xl uppercase tracking-tighter">Abbas Kaijuka – Founder of Kai’s Divo</h3>
+
+          {/* Right Side: Text */}
+          <div className="space-y-8">
+            <div>
+              <p className="font-body text-[10px] tracking-[0.4em] uppercase text-muted-foreground mb-2">Founder & Creative Director</p>
+              <h2 className="font-display text-3xl md:text-5xl uppercase tracking-tighter leading-tight">
+                Abbas Kaijuka <br />
+                <span className="italic">Founder of Kai’s Divo</span>
+              </h2>
+            </div>
+            
             <div className="font-body text-sm md:text-base text-muted-foreground space-y-6 leading-relaxed">
               <p>
                 Abbas Kaijuka is the visionary founder and lead designer behind <strong>Kai’s Divo</strong>, one of East Africa’s most celebrated fashion houses. Based in Kampala, Uganda, Kai’s Divo is renowned for its flawless fusion of Ugandan heritage and contemporary global style, offering custom designs in haute couture, ready-to-wear, and streetwear for men and women.
