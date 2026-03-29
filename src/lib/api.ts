@@ -59,3 +59,31 @@ export const submitContactForm = async (data: any) => {
 
   return response.json();
 };
+
+export const fetchPageContent = async (page: string) => {
+  if (isFirebaseConfigured()) {
+    try {
+      const contentRef = ref(db, `content/${page}`);
+      const snapshot = await get(contentRef);
+      return snapshot.val();
+    } catch (error) {
+      console.error(`Error fetching ${page} content:`, error);
+      return null;
+    }
+  }
+  return null;
+};
+
+export const updatePageContent = async (page: string, data: any) => {
+  if (isFirebaseConfigured()) {
+    try {
+      const contentRef = ref(db, `content/${page}`);
+      await set(contentRef, data);
+      return { success: true };
+    } catch (error) {
+      console.error(`Error updating ${page} content:`, error);
+      throw new Error(`Failed to update ${page} content`);
+    }
+  }
+  throw new Error("Firebase not configured");
+};

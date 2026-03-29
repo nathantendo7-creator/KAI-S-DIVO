@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   Carousel,
@@ -9,9 +9,27 @@ import Autoplay from "embla-carousel-autoplay";
 import Marquee from "@/components/Marquee";
 import Newsletter from "@/components/Newsletter";
 import aboutFounder from "@/assets/about_founder.jpg";
+import { db, isFirebaseConfigured } from "@/lib/firebase";
+import { ref, get } from "firebase/database";
 
 const Index = () => {
   const [activeDrop, setActiveDrop] = useState("06");
+  const [content, setContent] = useState({
+    heroTitle: "Kai's Divo",
+    volume06Text: "Drop 6: Minimalist retro elegance, where timeless closet pieces are reborn with a modern edge.",
+    modernTwistsTitle: "modern twists on classical elegance",
+  });
+
+  useEffect(() => {
+    if (isFirebaseConfigured()) {
+      const homeRef = ref(db, 'content/home');
+      get(homeRef).then((snapshot) => {
+        if (snapshot.exists()) {
+          setContent(prev => ({ ...prev, ...snapshot.val() }));
+        }
+      });
+    }
+  }, []);
 
   // Dynamically import assets
   const assetModules = import.meta.glob("@/assets/*.{jpg,jpeg,png,mp4}", { eager: true });
@@ -93,7 +111,7 @@ const Index = () => {
                     {/* Text Layer - Positioned Behind the Person */}
                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none px-4" style={{ zIndex: 3 }}>
                       <h1 className="font-display text-[20vw] md:text-[18vw] leading-none tracking-[-0.08em] uppercase text-white/50 select-none transition-all duration-700">
-                        Kai's Divo
+                        {content.heroTitle}
                       </h1>
                     </div>
 
@@ -126,7 +144,7 @@ const Index = () => {
             <h2 className="text-[20vw] lg:text-[15vw] leading-none font-display tracking-tighter opacity-10">06</h2>
             <div className="space-y-6 max-w-md">
               <p className="font-body text-sm md:text-base text-foreground leading-relaxed">
-                Drop 6: Minimalist retro elegance, where timeless closet pieces are reborn with a modern edge.
+                {content.volume06Text}
               </p>
               <Link
                 to="/collections"
@@ -169,7 +187,7 @@ const Index = () => {
         </div>
         <div className="relative z-10 text-center px-6">
           <h2 className="font-display text-5xl md:text-8xl text-white uppercase tracking-tighter leading-none max-w-4xl mx-auto">
-            modern twists <br /> on classical elegance
+            {content.modernTwistsTitle}
           </h2>
         </div>
       </section>
@@ -224,7 +242,7 @@ const Index = () => {
         </div>
         <div className="mt-40">
            <h1 className="huge-text opacity-5 text-background pointer-events-none select-none whitespace-nowrap">
-            Kai's Divo
+            {content.heroTitle}
           </h1>
         </div>
       </section>
