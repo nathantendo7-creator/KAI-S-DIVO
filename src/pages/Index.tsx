@@ -16,13 +16,39 @@ const Index = () => {
   // Dynamically import assets
   const assetModules = import.meta.glob("@/assets/*.{jpg,jpeg,png,mp4}", { eager: true });
   const allAssets = Object.entries(assetModules)
-    .filter(([path]) => !path.includes("logo.jpg") && !path.includes("about_founder.jpg"))
+    .filter(([path]) => {
+      const isLogo = path.includes("logo.jpg");
+      const isAbout = path.includes("about_founder.jpg");
+      const isSaveClipDuplicate = path.includes("SaveClip.App_") && 
+        (path.includes("473619780") || path.includes("621744881") || 
+         path.includes("621752945") || path.includes("621755053") || 
+         path.includes("626265330") || path.includes("632528076"));
+      return !isLogo && !isAbout && !isSaveClipDuplicate;
+    })
     .map(([path, module]: [string, any]) => ({
       src: module.default,
       name: path.split("/").pop()?.replace(/\.[^/.]+$/, "") || "Piece",
     }));
 
+  const cutoutModules = import.meta.glob("@/assets/cutouts/*.{jpg,jpeg,png}", { eager: true });
+  const cutouts = Object.entries(cutoutModules).reduce((acc, [path, module]: [string, any]) => {
+    const name = path.split("/").pop()?.replace(/\.[^/.]+$/, "").toLowerCase() || "";
+    acc[name] = module.default;
+    return acc;
+  }, {} as Record<string, string>);
+
   const heroSlides = allAssets.slice(0, 5);
+  
+  const getCutout = (name: string) => {
+    const n = name.toLowerCase();
+    if (n.includes("look-1") || n.includes("original") || n.includes("473619780")) return cutouts["k_1"] || cutouts["man1"];
+    if (n.includes("look-2") || n.includes("621744881")) return cutouts["man2"];
+    if (n.includes("look-3") || n.includes("621752945")) return cutouts["man3"];
+    if (n.includes("look-4") || n.includes("621755053")) return cutouts["man4"];
+    if (n.includes("look-5") || n.includes("626265330")) return cutouts["woman"];
+    return null;
+  };
+
   const dropNav = ["06", "05", "04", "03", "02", "01"];
 
   return (
@@ -35,38 +61,57 @@ const Index = () => {
           plugins={[Autoplay({ delay: 6000 })]}
         >
           <CarouselContent className="h-screen -ml-0">
-            {heroSlides.map((asset, index) => (
-              <CarouselItem key={index} className="h-full w-full pl-0">
-                <div className="relative w-full h-full">
-                  {asset.src.endsWith(".mp4") ? (
-                    <video
-                      src={asset.src}
-                      className="w-full h-full object-cover"
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                    />
-                  ) : (
-                    <img
-                      src={asset.src}
-                      alt="Hero"
-                      className="w-full h-full object-cover"
-                    />
-                  )}
-                  <div className="absolute inset-0 bg-black/10" />
-                </div>
-              </CarouselItem>
-            ))}
+            {heroSlides.map((asset, index) => {
+              const cutoutSrc = getCutout(asset.name);
+              const isLook1 = asset.name.toLowerCase().includes("look-1") || asset.name.toLowerCase().includes("original");
+              const bgSrc = (isLook1 && cutouts["backround"]) ? cutouts["backround"] : asset.src;
+              
+              return (
+                <CarouselItem key={index} className="h-full w-full pl-0">
+                  <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
+                    {/* Background Layer */}
+                    {asset.src.endsWith(".mp4") ? (
+                      <video
+                        src={asset.src}
+                        className="w-full h-full object-cover"
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        style={{ zIndex: 1 }}
+                      />
+                    ) : (
+                      <img
+                        src={bgSrc}
+                        alt="Hero"
+                        className="w-full h-full object-cover"
+                        style={{ zIndex: 1, imageRendering: "-webkit-optimize-contrast" }}
+                      />
+                    )}
+                    <div className="absolute inset-0 bg-black/5" style={{ zIndex: 2 }} />
+
+                    {/* Text Layer - Positioned Behind the Person */}
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none px-4" style={{ zIndex: 3 }}>
+                      <h1 className="font-display text-[20vw] md:text-[18vw] leading-none tracking-[-0.08em] uppercase text-white/50 select-none transition-all duration-700">
+                        Kai's Divo
+                      </h1>
+                    </div>
+
+                    {/* Person Cutout Layer - On Top of Text */}
+                    {cutoutSrc && (
+                      <img
+                        src={cutoutSrc}
+                        alt="Hero Cutout"
+                        className="absolute inset-0 w-full h-full object-cover object-bottom pointer-events-none select-none"
+                        style={{ zIndex: 4, imageRendering: "-webkit-optimize-contrast" }}
+                      />
+                    )}
+                  </div>
+                </CarouselItem>
+              );
+            })}
           </CarouselContent>
         </Carousel>
-
-        {/* Hero Text Overlay */}
-        <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
-          <h1 className="font-display text-[20vw] leading-none tracking-[-0.08em] uppercase text-white mix-blend-difference opacity-90">
-            Kai's Divo
-          </h1>
-        </div>
       </section>
 
       {/* Volume 06 Section */}
