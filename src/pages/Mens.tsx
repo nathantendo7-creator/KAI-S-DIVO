@@ -4,20 +4,22 @@ const Mens = () => {
   const assetModules = import.meta.glob("@/assets/*.{jpg,jpeg,png,mp4}", { eager: true });
   
   const mensFilenames = [
-    "newvideo.mp4",
-    "SaveClip.App_621744881_18054522896691876_474248715841451446_n.jpg",
-    "SaveClip.App_621752945_18054522866691876_6356504419454153873_n.jpg",
-    "SaveClip.App_621755053_18054522905691876_8950707648329954444_n.jpg",
-    "SaveClip.App_626297576_18094336064486658_5658840742965331039_n.jpg",
-    "SaveClip.App_629834732_18094336049486658_6729701261008518384_n.jpg",
-    "SaveClip.App_632025782_18094336067486658_5206606016670739364_n.jpg",
-    "SaveClip.App_632106583_18094336040486658_6401670103811217511_n.jpg",
-    "SaveClip.App_632393458_18071820197545829_1256232627390187817_n.jpg",
-    "SaveClip.App_632403033_18071820188545829_7923287181965084038_n.jpg",
-    "SaveClip.App_632525155_18071820185545829_7852810239566632823_n.jpg",
-    "SaveClip.App_632528224_18071820206545829_5705228593394416900_n.jpg",
-    "SaveClip.App_649226553_18395086528149585_1848832633573745825_n.jpg",
-    "SaveClip.App_AQNFEVKEDIwP9ZK0bQHAab6HJgDF8kmw0HEtF0Iy5XztvZyBOV4unLACV6Csn7m8Urze5-ob91OG_FeJY0ayXmqt.mp4"
+    "man_vid_1.mp4",
+    "man_vid_2.mp4",
+    "man_vid_3.mp4",
+    "man1.jpg",
+    "man2.jpg",
+    "man3.jpg",
+    "man4.jpg",
+    "man5.jpg",
+    "man6.jpg",
+    "man7.jpg",
+    "man8.jpg",
+    "man9.jpg",
+    "man10.jpg",
+    "man11.jpg",
+    "man12.jpg",
+    "man13.jpg"
   ];
 
   const mensAssets = Object.entries(assetModules)

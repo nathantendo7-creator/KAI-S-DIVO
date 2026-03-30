@@ -37,16 +37,14 @@ const Index = () => {
     .filter(([path]) => {
       const isLogo = path.includes("logo.jpg");
       const isAbout = path.includes("about_founder.jpg");
-      const isSaveClipDuplicate = path.includes("SaveClip.App_") && 
-        (path.includes("473619780") || path.includes("621744881") || 
-         path.includes("621752945") || path.includes("621755053") || 
-         path.includes("626265330") || path.includes("632528076"));
-      return !isLogo && !isAbout && !isSaveClipDuplicate;
+      // Filter out raw names that might have been leftover if any, but mostly just keep logo and about out
+      return !isLogo && !isAbout;
     })
     .map(([path, module]: [string, any]) => ({
       src: module.default,
       name: path.split("/").pop()?.replace(/\.[^/.]+$/, "") || "Piece",
-    }));
+    }))
+    .sort((a, b) => a.name.localeCompare(b.name));
 
   const cutoutModules = import.meta.glob("@/assets/cutouts/*.{jpg,jpeg,png}", { eager: true });
   const cutouts = Object.entries(cutoutModules).reduce((acc, [path, module]: [string, any]) => {
@@ -59,11 +57,11 @@ const Index = () => {
   
   const getCutout = (name: string) => {
     const n = name.toLowerCase();
-    if (n.includes("look-1") || n.includes("original") || n.includes("473619780")) return cutouts["k_1"] || cutouts["man1"];
-    if (n.includes("look-2") || n.includes("621744881")) return cutouts["man2"];
-    if (n.includes("look-3") || n.includes("621752945")) return cutouts["man3"];
-    if (n.includes("look-4") || n.includes("621755053")) return cutouts["man4"];
-    if (n.includes("look-5") || n.includes("626265330")) return cutouts["woman"];
+    if (n === "man13" || n.includes("man1")) return cutouts["man1"];
+    if (n === "man1") return cutouts["man2"]; // Original mapping logic was complex, keeping it simple
+    if (n === "man2") return cutouts["man3"];
+    if (n === "man3") return cutouts["man4"];
+    if (n === "lady1") return cutouts["woman"];
     return null;
   };
 
@@ -81,7 +79,7 @@ const Index = () => {
           <CarouselContent className="h-screen -ml-0">
             {heroSlides.map((asset, index) => {
               const cutoutSrc = getCutout(asset.name);
-              const isLook1 = asset.name.toLowerCase().includes("look-1") || asset.name.toLowerCase().includes("original");
+              const isLook1 = asset.name === "man13"; // man13 was the original hero look-1/original
               const bgSrc = (isLook1 && cutouts["backround"]) ? cutouts["backround"] : asset.src;
               
               return (
