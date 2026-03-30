@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { useSearchParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { submitContactForm } from "@/lib/api";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -13,8 +13,8 @@ const meetingTypes = ["In-Person", "Video Call", "Phone Call"] as const;
 
 const Contact = () => {
   const { toast } = useToast();
-  const [searchParams] = useSearchParams();
-  const asset = searchParams.get("asset");
+  const location = useLocation();
+  const asset = location.state?.asset;
   const [selected, setSelected] = useState<string>("In-Person");
 
   const mutation = useMutation({
@@ -73,15 +73,15 @@ const Contact = () => {
                 <div className="sticky top-32 space-y-6">
                   <p className="font-body text-[10px] tracking-[0.3em] uppercase text-muted-foreground">Inquiry Asset</p>
                   <div className="aspect-[3/4] bg-muted overflow-hidden rounded-sm border border-foreground/5 shadow-2xl">
-                    {decodeURIComponent(asset).endsWith(".mp4") ? (
+                    {asset.endsWith(".mp4") ? (
                       <video
-                        src={decodeURIComponent(asset)}
+                        src={asset}
                         className="w-full h-full object-cover"
                         autoPlay muted loop playsInline
                       />
                     ) : (
                       <img
-                        src={decodeURIComponent(asset)}
+                        src={asset}
                         alt="Inquiry Piece"
                         className="w-full h-full object-cover"
                       />
