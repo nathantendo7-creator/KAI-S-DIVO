@@ -4,7 +4,6 @@ const Mens = () => {
   const assetModules = import.meta.glob("@/assets/*.{jpg,jpeg,png,mp4}", { eager: true });
   
   const mensFilenames = [
-    "happybd.mp4",
     "newvideo.mp4",
     "SaveClip.App_621744881_18054522896691876_474248715841451446_n.jpg",
     "SaveClip.App_621752945_18054522866691876_6356504419454153873_n.jpg",
@@ -92,6 +91,12 @@ const Mens = () => {
           </Link>
         </div>
       </section>
+    </div>
+  );
+};
+
+export default Mens;
+  </section>
     </div>
   );
 };
