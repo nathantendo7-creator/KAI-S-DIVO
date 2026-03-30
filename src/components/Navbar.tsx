@@ -3,10 +3,11 @@ import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Search, ShoppingBag } from "lucide-react";
 
 const navLinks = [
+  { to: "/mens", label: "MEN" },
+  { to: "/ladies", label: "LADIES" },
   { to: "/collections", label: "Galerie" },
   { to: "/about", label: "About" },
   { to: "/contact", label: "Contact" },
-  { to: "/stockist", label: "Stockist" },
 ];
 
 const Navbar = () => {

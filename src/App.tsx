@@ -11,7 +11,6 @@ import Contact from "./pages/Contact";
 import Corbata from "./pages/Corbata";
 import Mens from "./pages/Mens";
 import Ladies from "./pages/Ladies";
-import Stockist from "./pages/Stockist";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/Admin/Login";
 import AdminDashboard from "./pages/Admin/Dashboard";
@@ -44,7 +43,6 @@ const App = () => (
                 <Route path="/about" element={<About />} />
                 <Route path="/collections" element={<Collections />} />
                 <Route path="/contact" element={<Contact />} />
-                <Route path="/stockist" element={<Stockist />} />
                 <Route path="/corbata" element={<Corbata />} />
                 <Route path="/mens" element={<Mens />} />
                 <Route path="/ladies" element={<Ladies />} />

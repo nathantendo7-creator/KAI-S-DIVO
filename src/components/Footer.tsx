@@ -19,14 +19,18 @@ const Footer = () => (
           </ul>
         </div>
 
-        {/* Stores */}
+        {/* Collections */}
         <div className="space-y-8">
-          <h4 className="font-display text-xs uppercase tracking-[0.4em] text-foreground">Stores</h4>
+          <h4 className="font-display text-xs uppercase tracking-[0.4em] text-foreground">Collections</h4>
           <ul className="space-y-4">
-            {["H. LORENZO", "CURVE"].map((label) => (
-              <li key={label}>
-                <Link to="/contact" className="nav-link text-[10px] lowercase tracking-widest">
-                  {label}
+            {[
+              { label: "MEN", to: "/mens" },
+              { label: "LADIES", to: "/ladies" },
+              { label: "GALERIE", to: "/collections" }
+            ].map((item) => (
+              <li key={item.label}>
+                <Link to={item.to} className="nav-link text-[10px] lowercase tracking-widest">
+                  {item.label}
                 </Link>
               </li>
             ))}
