@@ -89,7 +89,7 @@ const Index = () => {
                     {asset.src.endsWith(".mp4") ? (
                       <video
                         src={asset.src}
-                        className="w-full h-full object-cover object-top"
+                        className="w-full h-full object-contain"
                         autoPlay
                         muted
                         loop
@@ -100,7 +100,7 @@ const Index = () => {
                       <img
                         src={bgSrc}
                         alt="Hero"
-                        className="w-full h-full object-cover object-top"
+                        className="w-full h-full object-contain"
                         style={{ zIndex: 1, imageRendering: "-webkit-optimize-contrast" }}
                       />
                     )}
@@ -118,7 +118,7 @@ const Index = () => {
                       <img
                         src={cutoutSrc}
                         alt="Hero Cutout"
-                        className="absolute inset-0 w-full h-full object-cover object-top pointer-events-none select-none"
+                        className="absolute inset-0 w-full h-full object-contain pointer-events-none select-none"
                         style={{ zIndex: 4, imageRendering: "-webkit-optimize-contrast" }}
                       />
                     )}
