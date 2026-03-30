@@ -83,7 +83,6 @@ const Ladies = () => {
                     </Link>
                   </div>
                 </div>
-                <h3 className="font-display text-[10px] uppercase tracking-[0.2em] text-muted-foreground">{item.name}</h3>
               </div>
             ))}
           </div>
