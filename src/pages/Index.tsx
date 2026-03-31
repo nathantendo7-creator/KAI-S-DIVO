@@ -15,7 +15,7 @@ import { ref, get } from "firebase/database";
 const Index = () => {
   const [activeDrop, setActiveDrop] = useState("06");
   const [content, setContent] = useState({
-    heroTitle: "Kai's Divo",
+    heroTitle: "KAIS DIVO",
     volume06Text: "Drop 6: Minimalist retro elegance, where timeless closet pieces are reborn with a modern edge.",
     modernTwistsTitle: "modern twists on classical elegance",
   });
@@ -37,14 +37,13 @@ const Index = () => {
     .filter(([path]) => {
       const isLogo = path.includes("logo.jpg");
       const isAbout = path.includes("about_founder.jpg");
-      // Filter out raw names that might have been leftover if any, but mostly just keep logo and about out
       return !isLogo && !isAbout;
     })
     .map(([path, module]: [string, any]) => ({
       src: module.default,
       name: path.split("/").pop()?.replace(/\.[^/.]+$/, "") || "Piece",
     }))
-    .sort((a, b) => a.name.localeCompare(b.name));
+    .sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' }));
 
   const cutoutModules = import.meta.glob("@/assets/cutouts/*.{jpg,jpeg,png}", { eager: true });
   const cutouts = Object.entries(cutoutModules).reduce((acc, [path, module]: [string, any]) => {
@@ -53,7 +52,12 @@ const Index = () => {
     return acc;
   }, {} as Record<string, string>);
 
-  const heroSlides = allAssets.slice(0, 5);
+  // Group assets in 3s for the cinematic hero
+  const heroGroups = [];
+  for (let i = 0; i < allAssets.length - 2; i += 3) {
+    heroGroups.push(allAssets.slice(i, i + 3));
+  }
+  const heroSlides = heroGroups.slice(0, 6);
   
   const getCutout = (name: string) => {
     const n = name.toLowerCase();
@@ -77,55 +81,60 @@ const Index = () => {
           plugins={[Autoplay({ delay: 6000 })]}
         >
           <CarouselContent className="h-screen -ml-0">
-            {heroSlides.map((asset, index) => {
-              const cutoutSrc = getCutout(asset.name);
-              const isLook1 = asset.name === "man13"; // man13 was the original hero look-1/original
-              const bgSrc = (isLook1 && cutouts["backround"]) ? cutouts["backround"] : asset.src;
-              
-              return (
-                <CarouselItem key={index} className="h-full w-full pl-0">
-                  <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
-                    {/* Background Layer */}
-                    {asset.src.endsWith(".mp4") ? (
-                      <video
-                        src={asset.src}
-                        className="w-full h-full object-contain"
-                        autoPlay
-                        muted
-                        loop
-                        playsInline
-                        style={{ zIndex: 1 }}
-                      />
-                    ) : (
-                      <img
-                        src={bgSrc}
-                        alt="Hero"
-                        className="w-full h-full object-contain"
-                        style={{ zIndex: 1, imageRendering: "-webkit-optimize-contrast" }}
-                      />
-                    )}
-                    <div className="absolute inset-0 bg-black/5" style={{ zIndex: 2 }} />
+            {heroSlides.map((group, index) => (
+              <CarouselItem key={index} className="h-full w-full pl-0">
+                <div className="relative w-full h-full flex flex-col md:flex-row items-center justify-center overflow-hidden">
+                  {group.map((asset, assetIdx) => {
+                    const cutoutSrc = getCutout(asset.name);
+                    const isLook1 = asset.name === "man13"; // man13 was the original hero look-1/original
+                    const bgSrc = (isLook1 && cutouts["backround"]) ? cutouts["backround"] : asset.src;
+                    
+                    return (
+                      <div key={assetIdx} className="relative flex-1 w-full md:w-1/3 h-full overflow-hidden">
+                        {/* Background Layer */}
+                        {asset.src.endsWith(".mp4") ? (
+                          <video
+                            src={asset.src}
+                            className="w-full h-full object-cover"
+                            autoPlay
+                            muted
+                            loop
+                            playsInline
+                            style={{ zIndex: 1 }}
+                          />
+                        ) : (
+                          <img
+                            src={bgSrc}
+                            alt="Hero"
+                            className="w-full h-full object-cover"
+                            style={{ zIndex: 1, imageRendering: "-webkit-optimize-contrast" }}
+                          />
+                        )}
 
-                    {/* Text Layer - Positioned Behind the Person */}
-                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none px-4" style={{ zIndex: 3 }}>
-                      <h1 className="font-display text-[20vw] md:text-[18vw] leading-none tracking-[-0.08em] uppercase text-white/50 select-none transition-all duration-700">
-                        {content.heroTitle}
-                      </h1>
-                    </div>
+                        {/* Person Cutout Layer - On Top of Text */}
+                        {cutoutSrc && (
+                          <img
+                            src={cutoutSrc}
+                            alt="Hero Cutout"
+                            className="absolute inset-0 w-full h-full object-cover pointer-events-none select-none"
+                            style={{ zIndex: 4, imageRendering: "-webkit-optimize-contrast" }}
+                          />
+                        )}
+                      </div>
+                    );
+                  })}
+                  
+                  <div className="absolute inset-0 bg-black/5" style={{ zIndex: 2 }} />
 
-                    {/* Person Cutout Layer - On Top of Text */}
-                    {cutoutSrc && (
-                      <img
-                        src={cutoutSrc}
-                        alt="Hero Cutout"
-                        className="absolute inset-0 w-full h-full object-contain pointer-events-none select-none"
-                        style={{ zIndex: 4, imageRendering: "-webkit-optimize-contrast" }}
-                      />
-                    )}
+                  {/* Text Layer - Positioned Behind the Person */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none px-4" style={{ zIndex: 3 }}>
+                    <h1 className="font-display text-[15vw] md:text-[18vw] leading-none tracking-[-0.08em] uppercase text-white/50 select-none transition-all duration-700">
+                      {content.heroTitle}
+                    </h1>
                   </div>
-                </CarouselItem>
-              );
-            })}
+                </div>
+              </CarouselItem>
+            ))}
           </CarouselContent>
         </Carousel>
       </section>
