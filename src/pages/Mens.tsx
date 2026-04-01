@@ -1,6 +1,25 @@
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { db, isFirebaseConfigured } from "@/lib/firebase";
+import { ref, get } from "firebase/database";
 
 const Mens = () => {
+  const [content, setContent] = useState({
+    title: "Men's Collection",
+    description: "Epitomizing structural precision and modern masculinity — our bespoke tailoring designed for the discerning gentleman.",
+    ctaTitle: "Command Attention",
+  });
+
+  useEffect(() => {
+    if (isFirebaseConfigured()) {
+      get(ref(db, 'content/mens')).then((snapshot) => {
+        if (snapshot.exists()) {
+          setContent(prev => ({ ...prev, ...snapshot.val() }));
+        }
+      });
+    }
+  }, []);
+
   const assetModules = import.meta.glob("@/assets/*.{jpg,jpeg,png,mp4}", { eager: true });
   
   const mensFilenames = [
@@ -38,11 +57,10 @@ const Mens = () => {
             Menswear
           </p>
           <h1 className="font-display text-5xl md:text-7xl text-foreground leading-[0.95] uppercase tracking-tighter">
-            Men's <span className="italic">Collection</span>
+            {content.title.split(' ').slice(0, -1).join(' ')} <span className="italic">{content.title.split(' ').pop()}</span>
           </h1>
           <p className="font-body text-sm text-muted-foreground mt-6 max-w-lg leading-relaxed">
-            Epitomizing structural precision and modern masculinity — our bespoke tailoring 
-            designed for the discerning gentleman.
+            {content.description}
           </p>
         </div>
       </section>
@@ -83,7 +101,7 @@ const Mens = () => {
       <section className="py-32 px-6 lg:px-12 border-t border-border/10">
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="font-display text-3xl md:text-5xl text-foreground mb-8 uppercase tracking-tighter">
-            Command <span className="italic">Attention</span>
+            {content.ctaTitle.split(' ').slice(0, -1).join(' ')} <span className="italic">{content.ctaTitle.split(' ').pop()}</span>
           </h2>
           <Link
             to="/contact"

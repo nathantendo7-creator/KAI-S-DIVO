@@ -11,14 +11,14 @@ const AdminDashboard = () => {
   const [messages, setMessages] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<"requests" | "content">("requests");
-  const [contentPage, setContentPage] = useState<"home" | "about">("home");
+  const [contentPage, setContentPage] = useState<"home" | "about" | "collections" | "mens" | "ladies" | "corbata">("home");
   const [isSaving, setIsSaving] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
   // Content state
   const [homeContent, setHomeContent] = useState({
-    heroTitle: "Kai's Divo",
+    heroTitle: "KAI'S DIVO",
     volume06Text: "Drop 6: Minimalist retro elegance, where timeless closet pieces are reborn with a modern edge.",
     modernTwistsTitle: "modern twists on classical elegance",
   });
@@ -34,6 +34,40 @@ const AdminDashboard = () => {
     philosophy3Title: "Kampala Craft",
     philosophy3Text: "Deeply rooted in Uganda's vibrant capital, our studio is a hub of local craftsmanship...",
     finalQuote: "The goal is not to be seen, but to be remembered.",
+  });
+
+  const [collectionsContent, setCollectionsContent] = useState({
+    drop06Name: "Volume 06: Ethereal Kampala",
+    drop06Desc: "A celebration of light and movement. Our latest work explores the intersection of traditional Ugandan textures and contemporary minimalist silhouettes.",
+    drop05Name: "Volume 05: Midnight tailored",
+    drop05Desc: "Precision at its finest. Volume 05 focuses on the architecture of evening wear, where every stitch serves a purpose.",
+    drop04Name: "Volume 04: Urban Nomad",
+    drop04Desc: "Versatile, breathable, and unmistakably Kai's Divo. Designed for the modern visionary who values both style and comfort.",
+    drop03Name: "Volume 03: Heritage Reborn",
+    drop03Desc: "Revisiting our roots. This collection reimagines classic bespoke tailoring through a 21st-century lens.",
+  });
+
+  const [mensContent, setMensContent] = useState({
+    title: "Men's Collection",
+    description: "Epitomizing structural precision and modern masculinity — our bespoke tailoring designed for the discerning gentleman.",
+    ctaTitle: "Command Attention",
+  });
+
+  const [ladiesContent, setLadiesContent] = useState({
+    title: "Ladies Collection",
+    description: "Where ethereal grace meets avant-garde vision — our bespoke creations for the modern woman who commands the room.",
+    ctaTitle: "Redefine Elegance",
+  });
+
+  const [corbataContent, setCorbataContent] = useState({
+    title: "Corbata",
+    description: "A house code inspired by black-tie tailoring: monochrome confidence, sculpted cuts, and artistic tie details reimagined into contemporary silhouettes.",
+    feature1Title: "Monochrome Identity",
+    feature1Text: "A disciplined black-and-ivory direction that lets tailoring and form speak first.",
+    feature2Title: "Tuxedo Heritage",
+    feature2Text: "Structured jackets, elongated lines, and ceremonial detailing rooted in classic suiting.",
+    feature3Title: "Artisanal Finish",
+    feature3Text: "Distinctive handcrafted motifs and tie-inspired accents across both menswear and womenswear.",
   });
 
   useEffect(() => {
@@ -57,16 +91,23 @@ const AdminDashboard = () => {
         }
       });
 
-      // Fetch Home Content
-      const homeRef = ref(db, 'content/home');
-      get(homeRef).then(snapshot => {
-        if (snapshot.exists()) setHomeContent(prev => ({ ...prev, ...snapshot.val() }));
-      });
+      // Fetch all content
+      const contentPaths = ['home', 'about', 'collections', 'mens', 'ladies', 'corbata'];
+      const setters = {
+        home: setHomeContent,
+        about: setAboutContent,
+        collections: setCollectionsContent,
+        mens: setMensContent,
+        ladies: setLadiesContent,
+        corbata: setCorbataContent
+      };
 
-      // Fetch About Content
-      const aboutRef = ref(db, 'content/about');
-      get(aboutRef).then(snapshot => {
-        if (snapshot.exists()) setAboutContent(prev => ({ ...prev, ...snapshot.val() }));
+      contentPaths.forEach(path => {
+        get(ref(db, `content/${path}`)).then(snapshot => {
+          if (snapshot.exists()) {
+            (setters as any)[path]((prev: any) => ({ ...prev, ...snapshot.val() }));
+          }
+        });
       });
 
       setIsLoading(false);
@@ -87,7 +128,16 @@ const AdminDashboard = () => {
     setIsSaving(true);
     try {
       const pageRef = ref(db, `content/${contentPage}`);
-      await set(pageRef, contentPage === "home" ? homeContent : aboutContent);
+      const contentToSave = {
+        home: homeContent,
+        about: aboutContent,
+        collections: collectionsContent,
+        mens: mensContent,
+        ladies: ladiesContent,
+        corbata: corbataContent
+      }[contentPage];
+
+      await set(pageRef, contentToSave);
       toast({ title: "Success", description: `${contentPage} content updated` });
     } catch (error) {
       toast({ title: "Error", description: "Failed to update content", variant: "destructive" });
@@ -227,12 +277,12 @@ const AdminDashboard = () => {
             <header className="flex justify-between items-end">
               <div className="space-y-4">
                 <p className="font-body text-xs tracking-[0.3em] uppercase text-muted-foreground">Editor</p>
-                <div className="flex gap-4">
-                  {["home", "about"].map(p => (
+                <div className="flex flex-wrap gap-4">
+                  {["home", "about", "collections", "mens", "ladies", "corbata"].map(p => (
                     <button 
                       key={p}
                       onClick={() => setContentPage(p as any)}
-                      className={`font-display text-3xl md:text-5xl uppercase tracking-tighter leading-none ${contentPage === p ? "text-foreground underline underline-offset-8 italic" : "text-foreground/20 hover:text-foreground"}`}
+                      className={`font-display text-2xl md:text-3xl uppercase tracking-tighter leading-none ${contentPage === p ? "text-foreground underline underline-offset-8 italic" : "text-foreground/20 hover:text-foreground"}`}
                     >
                       {p}
                     </button>
@@ -250,7 +300,7 @@ const AdminDashboard = () => {
             </header>
 
             <div className="glass p-10 rounded-sm space-y-8">
-              {contentPage === "home" ? (
+              {contentPage === "home" && (
                 <div className="grid grid-cols-1 gap-8">
                   <div className="space-y-2">
                     <label className="font-body text-[10px] tracking-widest uppercase text-foreground/40">Hero Title</label>
@@ -277,7 +327,9 @@ const AdminDashboard = () => {
                     />
                   </div>
                 </div>
-              ) : (
+              )}
+
+              {contentPage === "about" && (
                 <div className="grid grid-cols-1 gap-8">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="space-y-2">
@@ -331,6 +383,117 @@ const AdminDashboard = () => {
                       onChange={e => setAboutContent({...aboutContent, finalQuote: e.target.value})}
                       className="bg-transparent border-border/40 font-display text-2xl uppercase h-16 text-center"
                     />
+                  </div>
+                </div>
+              )}
+
+              {contentPage === "collections" && (
+                <div className="grid grid-cols-1 gap-12">
+                   {[6, 5, 4, 3].map(v => {
+                     const num = `0${v}`;
+                     return (
+                       <div key={v} className="space-y-6 pb-8 border-b border-border/10 last:border-0">
+                         <h3 className="font-display text-xl uppercase tracking-widest text-foreground/60">Volume {num}</h3>
+                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div className="space-y-2">
+                              <label className="font-body text-[10px] tracking-widest uppercase text-foreground/40">Collection Name</label>
+                              <Input 
+                                value={(collectionsContent as any)[`drop${num}Name`]}
+                                onChange={e => setCollectionsContent({...collectionsContent, [`drop${num}Name`]: e.target.value} as any)}
+                                className="bg-transparent border-border/40 font-display text-lg uppercase h-12"
+                              />
+                            </div>
+                            <div className="space-y-2">
+                              <label className="font-body text-[10px] tracking-widest uppercase text-foreground/40">Description</label>
+                              <Textarea 
+                                value={(collectionsContent as any)[`drop${num}Desc`]}
+                                onChange={e => setCollectionsContent({...collectionsContent, [`drop${num}Desc`]: e.target.value} as any)}
+                                className="bg-transparent border-border/40 font-body text-xs h-24 resize-none"
+                              />
+                            </div>
+                         </div>
+                       </div>
+                     )
+                   })}
+                </div>
+              )}
+
+              {(contentPage === "mens" || contentPage === "ladies") && (
+                <div className="grid grid-cols-1 gap-8">
+                  {/* Reuse structure for Mens/Ladies */}
+                  {(() => {
+                    const content = contentPage === "mens" ? mensContent : ladiesContent;
+                    const setter = contentPage === "mens" ? setMensContent : setLadiesContent;
+                    return (
+                      <div className="grid grid-cols-1 gap-8">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                          <div className="space-y-2">
+                            <label className="font-body text-[10px] tracking-widest uppercase text-foreground/40">Page Title</label>
+                            <Input 
+                              value={content.title}
+                              onChange={e => setter({...content, title: e.target.value} as any)}
+                              className="bg-transparent border-border/40 font-display text-2xl uppercase h-16"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <label className="font-body text-[10px] tracking-widest uppercase text-foreground/40">CTA Title</label>
+                            <Input 
+                              value={content.ctaTitle}
+                              onChange={e => setter({...content, ctaTitle: e.target.value} as any)}
+                              className="bg-transparent border-border/40 font-display text-2xl uppercase h-16"
+                            />
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <label className="font-body text-[10px] tracking-widest uppercase text-foreground/40">Description</label>
+                          <Textarea 
+                            value={content.description}
+                            onChange={e => setter({...content, description: e.target.value} as any)}
+                            className="bg-transparent border-border/40 font-body text-sm h-32 resize-none"
+                          />
+                        </div>
+                      </div>
+                    )
+                  })()}
+                </div>
+              )}
+
+              {contentPage === "corbata" && (
+                <div className="grid grid-cols-1 gap-8">
+                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      <div className="space-y-2">
+                        <label className="font-body text-[10px] tracking-widest uppercase text-foreground/40">Page Title</label>
+                        <Input 
+                          value={corbataContent.title}
+                          onChange={e => setCorbataContent({...corbataContent, title: e.target.value})}
+                          className="bg-transparent border-border/40 font-display text-2xl uppercase h-16"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="font-body text-[10px] tracking-widest uppercase text-foreground/40">Header Description</label>
+                        <Textarea 
+                          value={corbataContent.description}
+                          onChange={e => setCorbataContent({...corbataContent, description: e.target.value})}
+                          className="bg-transparent border-border/40 font-body text-xs h-32 resize-none"
+                        />
+                      </div>
+                   </div>
+
+                   <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-8 border-t border-border/10">
+                     {[1, 2, 3].map(i => (
+                       <div key={i} className="space-y-4">
+                          <Input 
+                            value={(corbataContent as any)[`feature${i}Title`]}
+                            onChange={e => setCorbataContent({...corbataContent, [`feature${i}Title`]: e.target.value} as any)}
+                            className="bg-transparent border-border/40 font-display text-lg uppercase"
+                          />
+                          <Textarea 
+                            value={(corbataContent as any)[`feature${i}Text`]}
+                            onChange={e => setCorbataContent({...corbataContent, [`feature${i}Text`]: e.target.value} as any)}
+                            className="bg-transparent border-border/40 font-body text-xs h-32 resize-none"
+                          />
+                       </div>
+                     ))}
                   </div>
                 </div>
               )}

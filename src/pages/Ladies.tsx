@@ -1,6 +1,25 @@
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { db, isFirebaseConfigured } from "@/lib/firebase";
+import { ref, get } from "firebase/database";
 
 const Ladies = () => {
+  const [content, setContent] = useState({
+    title: "Ladies Collection",
+    description: "Where ethereal grace meets avant-garde vision — our bespoke creations for the modern woman who commands the room.",
+    ctaTitle: "Redefine Elegance",
+  });
+
+  useEffect(() => {
+    if (isFirebaseConfigured()) {
+      get(ref(db, 'content/ladies')).then((snapshot) => {
+        if (snapshot.exists()) {
+          setContent(prev => ({ ...prev, ...snapshot.val() }));
+        }
+      });
+    }
+  }, []);
+
   const assetModules = import.meta.glob("@/assets/*.{jpg,jpeg,png,mp4}", { eager: true });
   
   const ladiesFilenames = [
@@ -45,11 +64,10 @@ const Ladies = () => {
             Womenswear
           </p>
           <h1 className="font-display text-5xl md:text-7xl text-foreground leading-[0.95] uppercase tracking-tighter">
-            Ladies <span className="italic">Collection</span>
+            {content.title.split(' ').slice(0, -1).join(' ')} <span className="italic">{content.title.split(' ').pop()}</span>
           </h1>
           <p className="font-body text-sm text-muted-foreground mt-6 max-w-lg leading-relaxed">
-            Where ethereal grace meets avant-garde vision — our bespoke creations for 
-            the modern woman who commands the room.
+            {content.description}
           </p>
         </div>
       </section>
@@ -90,7 +108,7 @@ const Ladies = () => {
       <section className="py-32 px-6 lg:px-12 border-t border-border/10">
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="font-display text-3xl md:text-5xl text-foreground mb-8 uppercase tracking-tighter">
-            Redefine <span className="italic">Elegance</span>
+            {content.ctaTitle.split(' ').slice(0, -1).join(' ')} <span className="italic">{content.ctaTitle.split(' ').pop()}</span>
           </h2>
           <Link
             to="/contact"

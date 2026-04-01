@@ -15,7 +15,7 @@ import { ref, get } from "firebase/database";
 const Index = () => {
   const [activeDrop, setActiveDrop] = useState("06");
   const [content, setContent] = useState({
-    heroTitle: "KAIS DIVO",
+    heroTitle: "KAI'S DIVO",
     volume06Text: "Drop 6: Minimalist retro elegance, where timeless closet pieces are reborn with a modern edge.",
     modernTwistsTitle: "modern twists on classical elegance",
   });
@@ -128,7 +128,7 @@ const Index = () => {
 
                   {/* Text Layer - Positioned Behind the Person */}
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none px-4" style={{ zIndex: 3 }}>
-                    <h1 className="font-display text-[15vw] md:text-[18vw] leading-none tracking-[-0.08em] uppercase text-white/50 select-none transition-all duration-700">
+                    <h1 className="liquid-glass-text font-body font-bold text-[15vw] md:text-[18vw] leading-none tracking-[-0.08em] uppercase select-none transition-all duration-700">
                       {content.heroTitle}
                     </h1>
                   </div>

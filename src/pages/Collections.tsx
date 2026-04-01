@@ -1,8 +1,31 @@
 import { useSearchParams, Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { db, isFirebaseConfigured } from "@/lib/firebase";
+import { ref, get } from "firebase/database";
 
 const Collections = () => {
   const [searchParams] = useSearchParams();
   const dropFilter = searchParams.get("drop");
+  const [content, setContent] = useState({
+    drop06Name: "Volume 06: Ethereal Kampala",
+    drop06Desc: "A celebration of light and movement. Our latest work explores the intersection of traditional Ugandan textures and contemporary minimalist silhouettes.",
+    drop05Name: "Volume 05: Midnight tailored",
+    drop05Desc: "Precision at its finest. Volume 05 focuses on the architecture of evening wear, where every stitch serves a purpose.",
+    drop04Name: "Volume 04: Urban Nomad",
+    drop04Desc: "Versatile, breathable, and unmistakably Kai's Divo. Designed for the modern visionary who values both style and comfort.",
+    drop03Name: "Volume 03: Heritage Reborn",
+    drop03Desc: "Revisiting our roots. This collection reimagines classic bespoke tailoring through a 21st-century lens.",
+  });
+
+  useEffect(() => {
+    if (isFirebaseConfigured()) {
+      get(ref(db, 'content/collections')).then((snapshot) => {
+        if (snapshot.exists()) {
+          setContent(prev => ({ ...prev, ...snapshot.val() }));
+        }
+      });
+    }
+  }, []);
 
   // Dynamically import assets
   const assetModules = import.meta.glob("@/assets/*.{jpg,jpeg,png,mp4}", { eager: true });
@@ -15,23 +38,23 @@ const Collections = () => {
 
   const drops = {
     "06": {
-      name: "Volume 06: Ethereal Kampala",
-      description: "A celebration of light and movement. Our latest work explores the intersection of traditional Ugandan textures and contemporary minimalist silhouettes.",
+      name: content.drop06Name,
+      description: content.drop06Desc,
       pieces: allAssets.slice(0, 8).map((a, i) => ({ ...a, id: `06-${i}` }))
     },
     "05": {
-      name: "Volume 05: Midnight tailored",
-      description: "Precision at its finest. Volume 05 focuses on the architecture of evening wear, where every stitch serves a purpose.",
+      name: content.drop05Name,
+      description: content.drop05Desc,
       pieces: allAssets.slice(8, 16).map((a, i) => ({ ...a, id: `05-${i}` }))
     },
     "04": {
-      name: "Volume 04: Urban Nomad",
-      description: "Versatile, breathable, and unmistakably Kai's Divo. Designed for the modern visionary who values both style and comfort.",
+      name: content.drop04Name,
+      description: content.drop04Desc,
       pieces: allAssets.slice(16, 24).map((a, i) => ({ ...a, id: `04-${i}` }))
     },
     "03": {
-      name: "Volume 03: Heritage Reborn",
-      description: "Revisiting our roots. This collection reimagines classic bespoke tailoring through a 21st-century lens.",
+      name: content.drop03Name,
+      description: content.drop03Desc,
       pieces: allAssets.slice(24, 32).map((a, i) => ({ ...a, id: `03-${i}` }))
     }
   };
